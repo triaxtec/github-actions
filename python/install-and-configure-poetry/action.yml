@@ -1,0 +1,42 @@
+name: Install Poetry and Dependencies
+description: Installs/configures poetry and then installs the python dependencies.
+inputs:
+  private-package-repo-url:
+    description: The url of the private package repository you want to add to poetry. You must also specify both `private-package-repo-username` and `private-package-repo-password`
+    required: false
+    default: NOT_SPECIFIED
+  private-package-repo-username:
+    description: The url of the private package repository you want to add to poetry
+    required: false
+    default: NOT_SPECIFIED
+  private-package-repo-password:
+    description: The url of the private package repository you want to add to poetry
+    required: false
+    default: NOT_SPECIFIED
+  exclude-dev-dependencies:
+    description: If set to true, poetry install will be called with the --no-dev
+    required: false
+    default: "false"
+  
+
+runs:
+  using: composite
+  steps:
+    - name: Install and Configure Poetry
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry --user --upgrade
+        poetry config virtualenvs.in-project true
+        if [[ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]]; then
+          poetry config repositories.private ${{ inputs.private-package-repo-url }}
+          poetry config http-basic.private ${{ inputs.private-package-repo-username }} ${{ inputs.private-package-repo-password }}
+        fi
+    - name: Install Python Dependencies
+      shell: bash
+      run: |
+        if [[ "${{inputs.exclude-dev-dependencies}}" == "false" ]]; then
+          poetry install
+        else
+          poetry install --no-dev
+        fi

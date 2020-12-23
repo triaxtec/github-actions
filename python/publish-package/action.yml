@@ -1,0 +1,21 @@
+name: Publish Package
+description: Publishes the currently installed python package
+inputs:
+  publish-to-private-repo:
+    description: If set to true, package will be published to the configured private repository (poetry config repositories.private ...) instead of PyPi
+    required: false
+    default: "false"
+  
+
+runs:
+  using: composite
+  steps:
+    - name: Publish Python Package
+      shell: bash
+      run: |
+        if [[ "${{inputs.publish-to-private-repo}}" == "true" ]]; then
+          poetry publish --build -r private
+        else
+          poetry config http-basic.pypi __token__ ${{ secrets.PYPI_TOKEN }}
+          poetry publish --build
+        fi
