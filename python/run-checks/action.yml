@@ -4,6 +4,12 @@ inputs:
   module:
     description: The name of the module to run the checks on
     required: true
+  test-dir:
+    description: The directory (or path from the project root) containing the pytests to run. Defaults to "tests".
+    required: false
+    default: tests
+    
+
 
 
 runs:
@@ -31,7 +37,7 @@ runs:
       
     - name: Run pytest
       shell: bash
-      run: poetry run pytest --cov=${{ inputs.module }} --cov-report=term-missing tests
+      run: poetry run pytest --cov=${{ inputs.module }} --cov-report=term-missing ${{ inputs.test-dir }}
       
     - name: Generate coverage report
       shell: bash
