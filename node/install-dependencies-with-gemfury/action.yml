@@ -1,15 +1,19 @@
 name: Install Dependencies with Gemfury
 description: Installs dependencies with Triax's Gemfury registry
+inputs:
+  npm-registry-pull-token:
+    description: The token used to authenticate with the npm registry
+    required: true
+    default: NOT_SPECIFIED
 
 runs:
   using: composite
   steps:
     - name: Authenticate Gemfury
-      run: echo "//npm-proxy.fury.io/triaxtec/:_authToken=$GEMFURY_PULL_TOKEN" > .npmrc
-      env:
-        GEMFURY_PULL_TOKEN: ${{ secrets.GEMFURY_PULL_TOKEN }}
+      run: echo "//npm-proxy.fury.io/triaxtec/:_authToken=${{inputs.npm-registry-pull-token}}" > .npmrc
 
     - run: npm config set registry https://npm-proxy.fury.io/triaxtec/
 
     - name: Install Dependencies
       run: "npm ci"
+
