@@ -1,0 +1,22 @@
+name: Install Dependencies with Authenticated Registry
+description: Installs dependencies with an NPM registry
+inputs:
+  npm-registry-url:
+    description: The protocol relative (without http/s) NPM registry url
+    required: true
+    default: NOT_SPECIFIED
+  npm-registry-pull-token:
+    description: The token used to authenticate with the NPM registry
+    required: true
+    default: NOT_SPECIFIED
+
+runs:
+  using: composite
+  steps:
+    - name: Authenticate NPM Registry
+      run: echo "//${{inputs.npm-registry-url}}/:_authToken=${{inputs.npm-registry-pull-token}}" > .npmrc
+
+    - run: npm config set registry https://${{inputs.npm-registry-url}}/
+
+    - name: Install Dependencies
+      run: "npm ci"
