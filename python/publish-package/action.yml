@@ -5,6 +5,10 @@ inputs:
     description: If set to true, package will be published to the configured private repository (poetry config repositories.private ...) instead of PyPi
     required: false
     default: "false"
+  pypi-token:
+    description: Token to use to push pypi (if necessary)
+    required: false
+    default: NOT_SPECIFIED
   
 
 runs:
@@ -16,6 +20,6 @@ runs:
         if [[ "${{inputs.publish-to-private-repo}}" == "true" ]]; then
           poetry publish --build -r private
         else
-          poetry config http-basic.pypi __token__ ${{ secrets.PYPI_TOKEN }}
+          poetry config http-basic.pypi __token__ ${{ inputs.pypi-token }}
           poetry publish --build
         fi
