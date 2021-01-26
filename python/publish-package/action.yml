@@ -16,10 +16,12 @@ runs:
       shell: bash
       run: |
         if [[ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]]; then
+          echo "Uploading to private repo"
           poetry config repositories.private ${{ inputs.private-package-repo-url }}
-          poetry config http-basic.private __token__ ${{ inputs.token }}
+          poetry config http-basic.private ${{ inputs.token }} ${{ inputs.token }}
           poetry publish --build -r private
         else
+          echo "Uploading to PyPI"
           poetry config http-basic.pypi __token__ ${{ inputs.token }}
           poetry publish --build
         fi
