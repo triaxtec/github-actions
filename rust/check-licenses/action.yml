@@ -1,0 +1,6 @@
+name: Check Licenses
+description: Checks all dependencies for approved licenses and errors if a non-approved one is found
+  
+runs:
+  using: docker
+  image: Dockerfile
