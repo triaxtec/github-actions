@@ -1,5 +1,5 @@
-name: Check Licenses
-description: Checks all dependencies for approved licenses and errors if a non-approved one is found
+name: Deny Check
+description: Checks all dependencies for security advisories, approved licenses, bans, and approved sources.
 
 inputs:
     check_which:
