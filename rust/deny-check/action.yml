@@ -1,0 +1,12 @@
+name: Deny Check
+description: Checks all dependencies for security advisories, approved licenses, bans, and approved sources.
+
+inputs:
+    check_which:
+        description: "Which cargo-deny check target(s) to run: all, advisories, bans, licenses, sources"
+        required: false
+        default: 'all'
+  
+runs:
+  using: docker
+  image: Dockerfile

@@ -1,0 +1,24 @@
+name: Rust Makefile
+description: Runs the given Makefile target(s) on Rust projects
+
+inputs:
+    extra_dependencies:
+        description: "Extra dependencies required for building on Alpine Linux"
+        required: false
+        default: ''
+    makefile_root:
+        description: "Location of the Makefile"
+        required: false
+        default: '.'
+    makefile_targets:
+        description: "One or more make targets to run"
+        required: false
+        default: ''
+    rustup_components:
+        description: "Additional components to install via rustup"
+        required: false
+        default: ''
+  
+runs:
+  using: docker
+  image: Dockerfile
