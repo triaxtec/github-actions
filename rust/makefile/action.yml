@@ -2,6 +2,10 @@ name: Rust Makefile
 description: Runs the given Makefile target(s) on Rust projects
 
 inputs:
+    extra_dependencies:
+        description: "Extra dependencies required for building on Alpine Linux"
+        required: false
+        default: ''
     makefile_root:
         description: "Location of the Makefile"
         required: false

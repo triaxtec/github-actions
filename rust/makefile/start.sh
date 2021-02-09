@@ -5,6 +5,10 @@ if [ -z "$GITHUB_WORKSPACE" ]; then
     exit 1
 fi
 
+if [ -z "$INPUT_EXTRA_DEPENDENCIES" ]; then
+    apk add $INPUT_EXTRA_DEPENDENCIES
+fi
+
 cd "$GITHUB_WORKSPACE"
 
 for component in $INPUT_RUSTUP_COMPONENTS; do
