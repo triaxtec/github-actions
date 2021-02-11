@@ -39,11 +39,11 @@ runs:
     - name: Install Python Dependencies
       shell: bash
       run: |
-        COMMAND = "poetry install"
+        COMMAND="poetry install"
         if [[ "${{inputs.exclude-dev-dependencies}}" != "false" ]]; then
-          COMMAND = "$COMMAND --no-dev"
+          COMMAND="$COMMAND --no-dev"
         fi
         if [[ "${{inputs.extras}}" != "NOT_SPECIFIED" ]]; then
-          COMMAND = "$COMMAND -E ${{inputs.extras}}"
+          COMMAND="$COMMAND -E ${{inputs.extras}}"
         fi
         eval $COMMAND
