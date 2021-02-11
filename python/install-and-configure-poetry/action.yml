@@ -17,6 +17,10 @@ inputs:
     description: If set to true, poetry install will be called with the --no-dev
     required: false
     default: "false"
+  extras:
+    description: Extras to include when installing this package
+    required: false
+    default: NOT_SPECIFIED
   
 
 runs:
@@ -35,8 +39,11 @@ runs:
     - name: Install Python Dependencies
       shell: bash
       run: |
-        if [[ "${{inputs.exclude-dev-dependencies}}" == "false" ]]; then
-          poetry install
-        else
-          poetry install --no-dev
+        COMMAND = "poetry install"
+        if [[ "${{inputs.exclude-dev-dependencies}}" != "false" ]]; then
+          COMMAND = "$COMMAND --no-dev"
         fi
+        if [[ "${{inputs.extras}}" != "NOT_SPECIFIED" ]]; then
+          COMMAND = "$COMMAND -E ${{inputs.extras}}"
+        fi
+        eval $COMMAND
