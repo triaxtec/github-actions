@@ -8,6 +8,10 @@ inputs:
     description: The url of the private package repository you want to upload to (if any).
     required: false
     default: NOT_SPECIFIED
+  dir:
+    description: The directory containing the package to publish
+    required: false
+    default: .
 
 runs:
   using: composite
@@ -15,6 +19,7 @@ runs:
     - name: Publish Python Package
       shell: bash
       run: |
+        cd ${{ inputs.dir }}
         if [[ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]]; then
           echo "Uploading to private repo"
           poetry config repositories.private ${{ inputs.private-package-repo-url }}
