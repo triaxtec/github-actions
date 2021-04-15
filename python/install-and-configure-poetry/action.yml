@@ -6,11 +6,11 @@ inputs:
     required: false
     default: NOT_SPECIFIED
   private-package-repo-username:
-    description: The url of the private package repository you want to add to poetry
+    description: The username for the private package repository you want to add to poetry
     required: false
     default: NOT_SPECIFIED
   private-package-repo-password:
-    description: The url of the private package repository you want to add to poetry
+    description: The password for the private package repository you want to add to poetry
     required: false
     default: NOT_SPECIFIED
   exclude-dev-dependencies:
@@ -34,7 +34,7 @@ runs:
         poetry config virtualenvs.in-project true
         if [[ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]]; then
           poetry config repositories.private ${{ inputs.private-package-repo-url }}
-          poetry config http-basic.private ${{ inputs.private-package-repo-username }} ${{ inputs.private-package-repo-password }}
+          poetry config http-basic.private "${{ inputs.private-package-repo-username }}" "${{ inputs.private-package-repo-password }}"
         fi
     - name: Install Python Dependencies
       shell: bash
