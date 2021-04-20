@@ -2,17 +2,17 @@ name: Install Poetry and Dependencies
 description: Installs/configures poetry and then installs the python dependencies.
 inputs:
   private-package-repo-url:
-    description: The url of the private package repository you want to add to poetry. You must also specify `private-package-repo-username`
+    description: The url of the private package repository you want to add to poetry. You must also specify both `private-package-repo-username` and `private-package-repo-password`
     required: false
-    default: ""
+    default: NOT_SPECIFIED
   private-package-repo-username:
-    description: The username for the private package repository you want to add to poetry
+    description: The url of the private package repository you want to add to poetry
     required: false
-    default: ""
+    default: NOT_SPECIFIED
   private-package-repo-password:
-    description: The password for the private package repository you want to add to poetry
+    description: The url of the private package repository you want to add to poetry
     required: false
-    default: ""
+    default: NOT_SPECIFIED
   exclude-dev-dependencies:
     description: If set to true, poetry install will be called with the --no-dev
     required: false
@@ -32,14 +32,9 @@ runs:
         python -m pip install --upgrade pip
         pip install poetry --upgrade
         poetry config virtualenvs.in-project true
-        if [ -n "${{inputs.private-package-repo-url}}" ]; then
-          if [ -z "${{inputs.private-package-repo-username}}" ]; then
-            echo "private-package-repo-username is required when private-package-repo-url is provided" 1>&2
-            exit 1
-          fi
-
-          poetry config repositories.private "${{ inputs.private-package-repo-url }}"
-          poetry config http-basic.private "${{ inputs.private-package-repo-username }}" "${{ inputs.private-package-repo-password }}"
+        if [[ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]]; then
+          poetry config repositories.private ${{ inputs.private-package-repo-url }}
+          poetry config http-basic.private ${{ inputs.private-package-repo-username }} ${{ inputs.private-package-repo-password }}
         fi
     - name: Install Python Dependencies
       shell: bash
