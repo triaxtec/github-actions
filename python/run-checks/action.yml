@@ -21,7 +21,7 @@ runs:
       run: poetry run isort . --check
 
     - name: bandit
-        run: poetry run bandit -r contact_tracing -s B104,B108
+      run: poetry run bandit -r contact_tracing -s B104,B108
 
     - name: Lint (source)
       run: poetry run task lint
