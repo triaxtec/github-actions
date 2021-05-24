@@ -8,9 +8,6 @@ inputs:
     description: The directory (or path from the project root) containing the pytests to run. Defaults to "tests".
     required: false
     default: tests
-    
-
-
 
 runs:
   using: composite
@@ -23,9 +20,14 @@ runs:
       shell: bash
       run: poetry run isort . --check
 
-    - name: Run flake8
-      shell: bash
-      run: poetry run flake8 ${{ inputs.module }}
+    - name: bandit
+        run: poetry run bandit -r contact_tracing -s B104,B108
+
+    - name: Lint (source)
+      run: poetry run task lint
+
+    - name: Lint (tests)
+      run: poetry run task lint_tests
 
     - name: Run safety
       shell: bash
