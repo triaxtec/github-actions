@@ -22,7 +22,7 @@ runs:
 
     - name: bandit
       shell: bash
-      run: poetry run bandit -r contact_tracing -s B104,B108
+      run: poetry run bandit -r ${{ inputs.module }} -s B104,B108
 
     - name: Lint (source)
       shell: bash
@@ -43,7 +43,3 @@ runs:
     - name: Run pytest
       shell: bash
       run: poetry run pytest --cov=${{ inputs.module }} --cov-report=term-missing ${{ inputs.test-dir }}
-      
-    - name: Generate coverage report
-      shell: bash
-      run: poetry run coverage xml
