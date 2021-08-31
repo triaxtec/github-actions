@@ -6,7 +6,20 @@ inputs:
         description: "Which cargo-deny check target(s) to run: all, advisories, bans, licenses, sources"
         required: false
         default: 'all'
-  
+
 runs:
-  using: docker
-  image: Dockerfile
+  using: composite
+  steps:
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y libfindbin-libs-perl libssl-dev make
+      shell: bash
+    - name: Install cargo-deny
+      uses: actions-rs/install@v0.1
+      with:
+        crate: cargo-deny
+        version: latest
+        use-tool-cache: true
+    - name: Deny Check
+      run: cargo deny check -c ./deny.toml ${{ inputs.check_which }}
+      shell: bash
+
