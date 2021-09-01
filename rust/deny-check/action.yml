@@ -19,10 +19,7 @@ runs:
         crate: cargo-deny
         version: latest
         use-tool-cache: true
-    - name: (Debug) list all files
-      run: find / -name "deny.toml" -print
-      shell: bash
     - name: Deny Check
-      run: cargo deny check -c ./deny.toml ${{ inputs.check_which }}
+      run: cargo deny check -c ${{ env.GITHUB_ACTION_PATH }}/deny.toml ${{ inputs.check_which }}
       shell: bash
 
