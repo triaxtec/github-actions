@@ -14,7 +14,7 @@ runs:
       run: sudo apt-get update && sudo apt-get install -y libfindbin-libs-perl libssl-dev make
       shell: bash
     - name: Set up Rust
-      uses: triaxtec/github-actions/rust/setup@composite-actions
+      uses: triaxtec/github-actions/rust/setup@v2
     - name: Install cargo-deny
       uses: actions-rs/install@v0.1
       with:

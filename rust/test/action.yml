@@ -11,7 +11,7 @@ runs:
   using: composite
   steps:
     - name: Set up Rust
-      uses: triaxtec/github-actions/rust/setup@composite-actions
+      uses: triaxtec/github-actions/rust/setup@v2
     - name: Install cargo-all-features
       uses: actions-rs/install@v0.1
       with:
