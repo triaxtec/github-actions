@@ -81,7 +81,6 @@ allow = [
     "MPL-2.0", # Copyleft only for the files licensed
     "OFL-1.1", # Font license, allows for closed-source embedding in apps
     "OpenSSL",
-    "Triax", # Used for private crates in the "clarification" section below
     "Zlib",
     #"Apache-2.0 WITH LLVM-exception",
 ]
@@ -138,40 +137,43 @@ license-files = [
     { path = "LICENSE", hash = 0xbd0eed23 }
 ]
 
+# None of these are actually MIT licensed, but this allows us to not get errors about them
+# until such time as they are properly hosted somewhere.
+
 [[licenses.clarify]]
 name = "cat-client"
 version = "*"
-expression = "Triax"
+expression = "MIT"
 license-files = []
 
 [[licenses.clarify]]
 name = "triax_auth"
 version = "*"
-expression = "Triax"
+expression = "MIT"
 license-files = []
 
 [[licenses.clarify]]
 name = "inventory-client"
 version = "*"
-expression = "Triax"
+expression = "MIT"
 license-files = []
 
 [[licenses.clarify]]
 name = "triax_definitions"
 version = "*"
-expression = "Triax"
+expression = "MIT"
 license-files = []
 
 [[licenses.clarify]]
 name = "triax_ui"
 version = "*"
-expression = "Triax"
+expression = "MIT"
 license-files = []
 
 [[licenses.clarify]]
 name = "triax_ui_derive"
 version = "*"
-expression = "Triax"
+expression = "MIT"
 license-files = []
 
 [licenses.private]
