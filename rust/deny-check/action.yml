@@ -20,6 +20,6 @@ runs:
         version: latest
         use-tool-cache: true
     - name: Deny Check
-      run: cargo deny check -c ${{ env.GITHUB_ACTION_PATH }}/deny.toml ${{ inputs.check_which }}
+      run: cargo deny check -c ${{ env.GITHUB_ACTION_PATH }}/rust/deny-check/deny.toml ${{ inputs.check_which }}
       shell: bash
 
