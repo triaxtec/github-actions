@@ -5,6 +5,7 @@ inputs:
   toolchain:
     description: "Which Rust toolchain to use"
     required: false
+    default: "stable"
   components:
     description: "Which extra components to install"
     required: false
