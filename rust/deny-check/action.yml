@@ -20,7 +20,7 @@ runs:
         version: latest
         use-tool-cache: true
     - name: (Debug) list all files
-      run: find ${{ GITHUB_WORKSPACE }} -name "deny.toml" -print
+      run: find / -name "deny.toml" -print
       shell: bash
     - name: Deny Check
       run: cargo deny check -c ./deny.toml ${{ inputs.check_which }}
