@@ -19,10 +19,7 @@ runs:
         crate: cargo-deny
         version: latest
         use-tool-cache: true
-    - name: (Debug) Print ENV
-      run: env
-      shell: bash
     - name: Deny Check
-      run: cargo deny check -c ${{ env.GITHUB_ACTION_PATH }}/rust/deny-check/deny.toml ${{ inputs.check_which }}
+      run: cargo deny check -c "${{ github.action_path }}/deny.toml" ${{ inputs.check_which }}
       shell: bash
 
