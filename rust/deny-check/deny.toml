@@ -142,37 +142,37 @@ license-files = [
 name = "cat-client"
 version = "*"
 expression = "Triax"
-license_files = []
+license-files = []
 
 [[licenses.clarify]]
 name = "triax_auth"
 version = "*"
 expression = "Triax"
-license_files = []
+license-files = []
 
 [[licenses.clarify]]
 name = "inventory-client"
 version = "*"
 expression = "Triax"
-license_files = []
+license-files = []
 
 [[licenses.clarify]]
 name = "triax_definitions"
 version = "*"
 expression = "Triax"
-license_files = []
+license-files = []
 
 [[licenses.clarify]]
 name = "triax_ui"
 version = "*"
 expression = "Triax"
-license_files = []
+license-files = []
 
 [[licenses.clarify]]
 name = "triax_ui_derive"
 version = "*"
 expression = "Triax"
-license_files = []
+license-files = []
 
 [licenses.private]
 # If true, ignores workspace crates that aren't published, or are only
