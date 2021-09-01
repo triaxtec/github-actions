@@ -1,0 +1,30 @@
+name: Release Rust Binary
+description: "Build and upload a release build of a Rust binary"
+
+inputs:
+  binary_name:
+    description: "The name of the binary that will be built"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Rust
+      uses: triaxtec/github-actions/rust/setup@composite-actions
+    - name: Build the binary
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --release
+    - name: Upload the binary (Windows)
+      if: runner.os == "Windows"
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.binary_name }}.exe
+        path: target/release/${{ inputs.binary_name }}.exe
+    - name: Upload the binary (Non-Windows)
+      if: runner.os != "Windows"
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.binary_name }}
+        path: target/release/${{ inputs.binary_name }}

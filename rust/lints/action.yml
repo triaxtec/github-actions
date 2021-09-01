@@ -1,0 +1,29 @@
+name: Run Rust lints
+description: Runs clippy and rustfmt lints
+
+inputs:
+  github_token:
+    description: "GitHub token, i.e. secrets.GITHUB_TOKEN. Is passed to the clippy check to annotate pull requests"
+    required: true
+  clippy_args:
+    description: "Any extra arguments to pass to clippy."
+    required: false
+    default: "--all-features"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Rust
+      uses: triaxtec/github-actions/rust/setup@composite-actions
+      with:
+        components: rustfmt, clippy
+    - name: Run clippy lints
+      uses: actions-rs/clippy-check@v1
+      with:
+        token: ${{ inputs.github_token }}
+        args: ${{ inputs.args }}
+    - name: Run rustfmt check
+      uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: "-- --check"

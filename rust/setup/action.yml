@@ -1,0 +1,49 @@
+name: Setup Rust
+description: Automatically sets up Rust and caches build artifacts for faster build times
+
+inputs:
+  toolchain:
+    description: "Which Rust toolchain to use"
+    required: false
+  components:
+    description: "Which extra components to install"
+    required: false
+  default:
+    description: "Set the toolchain as the default one"
+    required: false
+    default: true
+  override:
+    description: "Set the toolchain as a local override"
+    required: false
+    default: false
+  target:
+    description: "An additional target to install"
+    required: false
+
+runs:
+  using: composite
+  steps:
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+            path: ~/.cargo/registry
+            key: cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache cargo index
+        uses: actions/cache@v1
+        with:
+            path: ~/.cargo/git
+            key: cargo-index-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache cargo binaries
+        uses: actions/cache@v1
+        with:
+            path: ~/.cargo/bin
+            key: cargo-bin-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ inputs.toolchain }}
+          components: ${{ inputs.components }}
+          target: ${{ inputs.target }}
+          default: ${{ inputs.default }}
+          override: ${{ inputs.override }}
