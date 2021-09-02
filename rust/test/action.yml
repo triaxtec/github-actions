@@ -21,6 +21,8 @@ runs:
         version: latest
         use-tool-cache: ${{ inputs.use_tool_cache }}
     - name: Run tests
+      # Running manually instead of using actions-rs/cargo until
+      # https://github.com/frewsxcv/cargo-all-features/issues/16 is resolved.
       run: cargo test-all-features
       shell: bash
       working-directory: ${{ inputs.working_directory }}
