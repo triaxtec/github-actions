@@ -24,7 +24,7 @@ runs:
         version: latest
         use-tool-cache: true
     - name: Deny Check
-      run: cargo deny check -c "${{ github.action_path }}/deny.toml" ${{ inputs.check_which }}
+      run: cargo deny check -c ${{ github.action_path }}/deny.toml ${{ inputs.check_which }}
       shell: bash
       working-directory: ${{ inputs.working_directory }}
 
