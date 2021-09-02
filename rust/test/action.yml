@@ -21,7 +21,6 @@ runs:
         version: latest
         use-tool-cache: ${{ inputs.use_tool_cache }}
     - name: Run tests
-      uses: actions-rs/cargo@v1
-      with:
-        command: test-all-features
-        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory == github.workspace] }}
+      run: cargo test-all-features
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
