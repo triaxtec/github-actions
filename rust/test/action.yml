@@ -6,6 +6,10 @@ inputs:
     description: "Whether to attempt to install cargo-all-features from the tool cache before compiling"
     required: false
     default: "true"
+  working_directory:
+    description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
+    required: false
+    default: ${{ github.workspace }}
 
 runs:
   using: composite
@@ -20,3 +24,4 @@ runs:
       uses: actions-rs/cargo@v1
       with:
         command: test-all-features
+        args: ${{ fromJSON('["--manifest-path \"${{ inputs.working_directory }}/Cargo.toml\"",""]')[inputs.working_directory == github.workspace] }}
