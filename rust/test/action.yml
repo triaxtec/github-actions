@@ -1,17 +1,15 @@
 name: Run Rust Tests
-description: "Sets up Rust and runs tests using cargo-all-features"
+description: "Runs Rust tests using cargo-all-features"
 
 inputs:
   use_tool_cache:
     description: "Whether to attempt to install cargo-all-features from the tool cache before compiling"
     required: false
-    default: true
+    default: "true"
 
 runs:
   using: composite
   steps:
-    - name: Set up Rust
-      uses: triaxtec/github-actions/rust/setup@v2
     - name: Install cargo-all-features
       uses: actions-rs/install@v0.1
       with:
