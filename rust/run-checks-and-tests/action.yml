@@ -22,16 +22,16 @@ runs:
   using: composite
   steps:
     - name: Set up Rust
-      uses: triaxtec/github-actions/rust/setup@v2
+      uses: triaxtec/github-actions/rust/setup@composite-actions
       with:
         components: clippy, rustfmt
     - name: Run tests
-      uses: triaxtec/github-actions/rust/test@v2
+      uses: triaxtec/github-actions/rust/test@composite-actions
       with:
         use_tool_cache: ${{ inputs.use_tool_cache }}
         working_directory: ${{ inputs.working_directory }}
     - name: Run lints
-      uses: triaxtec/github-actions/rust/lint@v2
+      uses: triaxtec/github-actions/rust/lint@composite-actions
       with:
         github_token: ${{ inputs.github_token }}
         clippy_args: ${{ inputs.clippy_args }}
