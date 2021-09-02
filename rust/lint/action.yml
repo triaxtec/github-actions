@@ -21,9 +21,9 @@ runs:
       uses: actions-rs/clippy-check@v1
       with:
         token: ${{ inputs.github_token }}
-        args: ${{ fromJSON(join(["[--manifest-path \"",inputs.working_directory,"/Cargo.toml\",\"\"]"],""))[inputs.working_directory == github.workspace] }} ${{ inputs.clippy_args }}
+        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory == github.workspace] }} ${{ inputs.clippy_args }}
     - name: Run rustfmt check
       uses: actions-rs/cargo@v1
       with:
         command: fmt
-        args: ${{ fromJSON(join(["[--manifest-path \"",inputs.working_directory,"/Cargo.toml\",\"\"]"],""))[inputs.working_directory == github.workspace] }}  -- --check
+        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory == github.workspace] }}  -- --check

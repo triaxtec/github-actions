@@ -24,4 +24,4 @@ runs:
       uses: actions-rs/cargo@v1
       with:
         command: test-all-features
-        args: ${{ fromJSON(join(["[--manifest-path \"",inputs.working_directory,"/Cargo.toml\",\"\"]"],""))[inputs.working_directory == github.workspace] }}
+        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory == github.workspace] }}
