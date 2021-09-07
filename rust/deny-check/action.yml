@@ -1,11 +1,15 @@
 name: Deny Check
-description: Checks all dependencies for security advisories, approved licenses, bans, and approved sources.
+description: "Checks all dependencies for security advisories, approved licenses, bans, and approved sources."
 
 inputs:
-    check_which:
-        description: "Which cargo-deny check target(s) to run: all, advisories, bans, licenses, sources"
-        required: false
-        default: 'all'
+  check_which:
+    description: "Which cargo-deny check target(s) to run: all, advisories, bans, licenses, sources"
+    required: false
+    default: 'all'
+  working_directory:
+    description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
+    required: false
+    default: ${{ github.workspace }}
 
 runs:
   using: composite
@@ -20,6 +24,7 @@ runs:
         version: latest
         use-tool-cache: true
     - name: Deny Check
-      run: cargo deny check -c "${{ github.action_path }}/deny.toml" ${{ inputs.check_which }}
+      run: cargo deny check -c ${{ github.action_path }}/deny.toml ${{ inputs.check_which }}
       shell: bash
+      working-directory: ${{ inputs.working_directory }}
 

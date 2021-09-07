@@ -1,0 +1,28 @@
+name: Run Rust Tests
+description: "Runs Rust tests using cargo-all-features"
+
+inputs:
+  use_tool_cache:
+    description: "Whether to attempt to install cargo-all-features from the tool cache before compiling"
+    required: false
+    default: "true"
+  working_directory:
+    description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
+    required: false
+    default: ${{ github.workspace }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install cargo-all-features
+      uses: actions-rs/install@v0.1
+      with:
+        crate: cargo-all-features
+        version: latest
+        use-tool-cache: ${{ inputs.use_tool_cache }}
+    - name: Run tests
+      # Running manually instead of using actions-rs/cargo until
+      # https://github.com/frewsxcv/cargo-all-features/issues/16 is resolved.
+      run: cargo test-all-features
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
