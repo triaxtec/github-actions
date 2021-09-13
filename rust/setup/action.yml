@@ -24,21 +24,6 @@ inputs:
 runs:
   using: composite
   steps:
-      - name: Cache cargo registry
-        uses: actions/cache@v1
-        with:
-            path: ~/.cargo/registry
-            key: cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo index
-        uses: actions/cache@v1
-        with:
-            path: ~/.cargo/git
-            key: cargo-index-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo binaries
-        uses: actions/cache@v1
-        with:
-            path: ~/.cargo/bin
-            key: cargo-bin-${{ hashFiles('**/Cargo.lock') }}
       - name: Install Rust Toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -48,3 +33,6 @@ runs:
           target: ${{ inputs.target }}
           default: ${{ inputs.default }}
           override: ${{ inputs.override }}
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v1
