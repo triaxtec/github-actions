@@ -13,13 +13,12 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up Rust
-      uses: triaxtec/github-actions/rust/setup@v2
     - name: Build the binary
       uses: actions-rs/cargo@v1
       with:
         command: build
         args: --release ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory == github.workspace] }}
+        
     - name: Upload the binary
       uses: actions/upload-artifact@v2
       # The grossness with fromJSON works around the fact that conditionals are not supported
