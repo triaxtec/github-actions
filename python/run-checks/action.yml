@@ -34,8 +34,9 @@ runs:
 
     - name: Run safety
       shell: bash
-      # Ignore safety advisory for encrypted values in sqlalchemy-utils, a feature we don't use.
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194
+      # 42194: Ignore safety advisory for encrypted values in sqlalchemy-utils, a feature we don't use.
+      # 42050: Ignore safety advisory for more secure cookies in werkzeug, another unused feature.
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050
 
     - name: Run mypy
       shell: bash
