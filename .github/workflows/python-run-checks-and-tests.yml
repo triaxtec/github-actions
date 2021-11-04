@@ -14,6 +14,10 @@ on:
       module:
         required: true
         type: string
+    additional-modules-to-lint:
+      description: Additional modules to be linted using the standard ruleset (i.e. not the ones used for linting unit tests).
+      required: false
+      default: ""
       dependency-hash-version:
         required: false
         type: string
@@ -81,6 +85,7 @@ jobs:
         uses: triaxtec/github-actions/python/actions/run-checks@TSD-274-reusable-workflows
         with:
           module: ${{ inputs.module }}
+          additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}
         env:
           AWS_DEFAULT_REGION: us-east-1
 
