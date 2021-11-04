@@ -69,11 +69,9 @@ jobs:
           extras: ${{ inputs.extras }}
           working-directory: ${{ inputs.working-directory }}
 
-      - name: Use test_config as config
-        run: cp tests/test_config.yml config.yml
-
-      - name: Create Audit Database
-        run: poetry run spotr init-db
+      - name: Custom pre-checks script
+        if: inputs.custom-pre-checks-script
+        run: ${{ inputs.custom-pre-checks-script }}
 
       - name: Run Checks and Tests
         uses: triaxtec/github-actions/python/actions/run-checks@TSD-274-reusable-workflows

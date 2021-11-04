@@ -1,0 +1,65 @@
+name: Deploy
+
+on: 
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      cli-name:
+        required: true
+        type: string
+      dependency-hash-version:
+        required: false
+        type: string
+        default: "v1"
+      private-package-repo-url:
+        description: The url of the private package repository you want to add to poetry. You must also specify `private-package-repo-username`
+        type: string
+        required: false
+        default: ""
+    secrets:
+      private-package-repo-username:
+        required: false
+      private-package-repo-password:
+        required: false
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+jobs:
+  build-and-deploy:
+    name: Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies (Node)
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: npm-${{ hashFiles('package-lock.json') }}
+
+      - name: Setup Python and Poetry and Install Dependencies
+        uses: triaxtec/github-actions/python/actions/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
+        with:
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          private-package-repo-username: ${{ secrets.private-package-repo-username }}
+
+      - name: Build Code
+        run: poetry run ${{ inputs.cli-name }} build
+
+      - name: Generate Requirements
+        run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
+
+      - name: Install Serverless and Plugins
+        run: npm install
+
+      - name: Serverless Deploy to ${{ inputs.environment }}
+        run: $(npm bin)/serverless deploy --stage ${{ inputs.environment }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
