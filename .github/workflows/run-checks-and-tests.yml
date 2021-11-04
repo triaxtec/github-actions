@@ -16,26 +16,32 @@ on:
         default: "v1"
       private-package-repo-url:
         description: The url of the private package repository you want to add to poetry. You must also specify `private-package-repo-username`
+        type: string
         required: false
         default: ""
       private-package-repo-username:
         description: The username for the private package repository you want to add to poetry
+        type: string
         required: false
         default: ""
       private-package-repo-password:
         description: The password for the private package repository you want to add to poetry
+        type: string
         required: false
         default: ""
       exclude-dev-dependencies:
         description: If set to true, poetry install will be called with the --no-dev
+        type: string
         required: false
         default: "false"
       extras:
         description: Extras to include when installing this package
+        type: string
         required: false
         default: NOT_SPECIFIED
       working-directory:
         description: The working directory where this action should run. Defaults to the root of the git repository.
+        type: string
         required: false
         default: "."
   
