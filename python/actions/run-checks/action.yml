@@ -4,6 +4,10 @@ inputs:
   module:
     description: The name of the module to run the checks on
     required: true
+  additional-modules-to-lint:
+    description: Additional modules to be linted using the standard ruleset (i.e. not the ones used for linting unit tests).
+    required: false
+    default: ""
   test-dir:
     description: The directory (or path from the project root) containing the pytests to run. Defaults to "tests".
     required: false
@@ -26,11 +30,11 @@ runs:
 
     - name: Lint (source)
       shell: bash
-      run: poetry run task lint
+      run: poetry run pylint ${{ inputs.module }} ${{ inputs.additional-modules-to-lint}}
 
     - name: Lint (tests)
       shell: bash
-      run: poetry run task lint_tests
+      run: poetry run pylint --disable=\"R0201,W0201,W0212,W0621,W0404,C0302\" ${{ inputs.test-dir }}
 
     - name: Run safety
       shell: bash
