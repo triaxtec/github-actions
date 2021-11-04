@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
       custom-pre-checks-script:
-        require: false
+        required: false
         type: string
         default: ""
       module:
