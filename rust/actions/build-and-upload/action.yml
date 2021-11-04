@@ -16,7 +16,7 @@ runs:
     - name: Build the binary
       uses: actions-rs/cargo@v1
       env: 
-        MACOSX_DEPLOYMENT_TARGET: "11.6"
+        MACOSX_DEPLOYMENT_TARGET: 11.6
       with:
         command: build
         args: --release ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory == github.workspace] }}
