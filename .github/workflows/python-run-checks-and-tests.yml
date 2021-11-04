@@ -7,6 +7,10 @@ on:
         required: false
         type: boolean
         default: false
+      custom-pre-checks-script:
+        require: false
+        type: string
+        default: ""
       module:
         required: true
         type: string
