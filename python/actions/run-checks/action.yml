@@ -34,7 +34,7 @@ runs:
 
     - name: Lint (tests)
       shell: bash
-      run: poetry run pylint --disable=\"R0201,W0201,W0212,W0621,W0404,C0302\" ${{ inputs.test-dir }}
+      run: poetry run pylint --disable="R0201,W0201,W0212,W0621,W0404,C0302" ${{ inputs.test-dir }}
 
     - name: Run safety
       shell: bash
