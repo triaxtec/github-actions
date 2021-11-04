@@ -14,10 +14,11 @@ on:
       module:
         required: true
         type: string
-    additional-modules-to-lint:
-      description: Additional modules to be linted using the standard ruleset (i.e. not the ones used for linting unit tests).
-      required: false
-      default: ""
+      additional-modules-to-lint:
+        description: Additional modules to be linted using the standard ruleset (i.e. not the ones used for linting unit tests).
+        required: false
+        type: string
+        default: ""
       dependency-hash-version:
         required: false
         type: string
