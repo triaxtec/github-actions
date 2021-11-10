@@ -17,10 +17,10 @@ runs:
       uses: actions/checkout@v2
 
     - name: Set up Rust
-      uses: triaxtec/github-actions/rust/actions/setup@actions-vs-jobs-refactor
+      uses: triaxtec/github-actions/rust/actions/setup@TSD-274-reusable-workflows
 
     - name: Build and Upload Binary
-      uses: triaxtec/github-actions/rust/actions/build-and-upload@actions-vs-jobs-refactor
+      uses: triaxtec/github-actions/rust/actions/build-and-upload@TSD-274-reusable-workflows
       with:
         binary_name: ${{ inputs.binary_name }}
         working_directory: ${{ inputs.working_directory }}

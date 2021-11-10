@@ -25,12 +25,12 @@ runs:
       uses: actions/checkout@v2
 
     - name: Set up Rust
-      uses: triaxtec/github-actions/rust/actions/setup@actions-vs-jobs-refactor
+      uses: triaxtec/github-actions/rust/actions/setup@TSD-274-reusable-workflows
       with:
         components: clippy, rustfmt
 
     - name: Run Checks and Tests
-      uses: triaxtec/github-actions/rust/actions/run-checks-and-tests@actions-vs-jobs-refactor
+      uses: triaxtec/github-actions/rust/actions/run-checks-and-tests@TSD-274-reusable-workflows
       with:
         github_token: ${{ inputs.github_token }}
         clippy_args: ${{ inputs.clippy_args }}
