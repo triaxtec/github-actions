@@ -29,7 +29,8 @@ on:
         required: false
 
 jobs:
-  deploy:
+  publish:
+    name: Publish Package
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -40,8 +41,8 @@ jobs:
         path: ./.venv
         key: poetry-${{ inputs.dependency-hash-version }}-${{ hashFiles('poetry.lock') }}
 
-    - name: Install Dependencies
-      uses: triaxtec/github-actions/python/install-and-configure-poetry@TSD-274-reusable-workflows
+    - name: Setup Python and Poetry and Install Dependencies
+      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ secrets.private-package-repo-username }}
