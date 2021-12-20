@@ -47,7 +47,7 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
 
       - name: Setup Python and Poetry and Install Dependencies
-        uses: triaxtec/github-actions/python/actions/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
         with:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}

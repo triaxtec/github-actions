@@ -1,4 +1,4 @@
-name: Run Styling/Typing/Lint Checks and Tests
+name: Build and Publish Client Libraries
 
 on: 
   workflow_call:
@@ -48,47 +48,54 @@ on:
         required: false
       private-package-repo-password:
         required: false
-  
+      private-package-repo-push-token:
+        required: true
+
 jobs:
-  checks:
-    name: Run Styling/Typing/Lint Checks and Tests
+  build-python-client:
+    name: Python Client Library
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Generate OpenAPI Document
+        uses: triaxtec/github-actions/python/generate-openapi-doc
 
-      - name: Start Services
-        if: inputs.start-services-with-docker-compose
-        run: docker-compose up -d
+      - name: Install pipx
+        run: python -m pip install --user pipx
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: Generate Python Client
+        run: python -m pipx run openapi-python-client generate --config python-generator-config.yml --path openapi.json
+
+      - name: Publish Python Client
+        uses: triaxtec/github-actions/python/publish-package@main
         with:
-          path: ./.venv
-          key: poetry-${{ inputs.dependency-hash-version }}-${{ hashFiles('poetry.lock') }}
-
-      - name: Setup python and poetry and install dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
-        with:
+          token: ${{ secrets.private-package-repo-push-token }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
-          private-package-repo-username: ${{ secrets.private-package-repo-username }}
-          private-package-repo-password: ${{ secrets.private-package-repo-password }}
-          exclude-dev-dependencies: ${{ inputs.exclude-dev-dependencies }}
-          extras: ${{ inputs.extras }}
-          working-directory: ${{ inputs.working-directory }}
+          dir: ./triax-inventory-api-client
 
-      - name: Custom pre-checks script
-        if: inputs.custom-pre-checks-script
-        run: ${{ inputs.custom-pre-checks-script }}
+  build-and-publish-angular-client:
+    name: Angular Client Library
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate OpenAPI Document
+      uses: triaxtec/github-actions/python/generate-openapi-doc
 
-      - name: Run Checks and Tests
-        uses: triaxtec/github-actions/python/run-checks@TSD-274-reusable-workflows
-        with:
-          module: ${{ inputs.module }}
-          additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}
-        env:
-          AWS_DEFAULT_REGION: us-east-1
+    - name: Set up Node
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: '14'
 
-      - name: Uninstall package before caching
-        run: poetry run pip uninstall ${{ inputs.module }} -y
+    - name: Generate Angular Client Library
+      uses: openapi-generators/openapitools-generator-action@v1.1.1
+      with:
+        generator: typescript-angular
+        config-file: generator-config.yml
+
+    - name: Publish Angular Client Library
+      run: |
+        cd typescript-angular-client
+        echo "//npm.fury.io/triaxtec/:_authToken=${{ secrets.GEMFURY_PUSH_TOKEN }}" > .npmrc
+        npm install
+        npm remove @types/node
+        npm add -D @types/node@12.20.20
+        npm run build
+        npm publish dist
