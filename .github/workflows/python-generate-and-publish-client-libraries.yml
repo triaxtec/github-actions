@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate OpenAPI Document
-        uses: triaxtec/github-actions/python/generate-openapi-doc
+        uses: triaxtec/github-actions/python/generate-openapi-doc@TSD-274-reusable-workflows
         with:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           cli-name: ${{ inputs.cli-name }}
@@ -50,7 +50,7 @@ jobs:
         run: python -m pipx run openapi-python-client generate --config python-generator-config.yml --path openapi.json
 
       - name: Publish Python Client
-        uses: triaxtec/github-actions/python/publish-package@main
+        uses: triaxtec/github-actions/python/publish-package@TSD-274-reusable-workflows
         with:
           token: ${{ secrets.private-package-repo-push-token }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate OpenAPI Document
-      uses: triaxtec/github-actions/python/generate-openapi-doc
+      uses: triaxtec/github-actions/python/generate-openapi-doc@TSD-274-reusable-workflows
 
     - name: Set up Node
       uses: actions/setup-node@v2.1.4
