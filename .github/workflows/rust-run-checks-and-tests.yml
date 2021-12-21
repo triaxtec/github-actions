@@ -23,12 +23,21 @@ on:
         description: "GitHub token, i.e. secrets.GITHUB_TOKEN. Is passed to the clippy check to annotate pull requests"
         required: true
 
+      ssh-private-key:
+        description: "SSH key used to pull private dependencies from GitHub"
+        required: true
+
 jobs:
   checks:
     name: Run Styling/Typing/Lint Checks and Tests
     runs-on: ubuntu-latest
 
     steps:
+      - name: Add SSH key so cargo can access private repos
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.ssh-private-key }}
+
       - name: Checkout code
         uses: actions/checkout@v2
 
