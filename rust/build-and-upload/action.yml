@@ -13,17 +13,13 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Test
-      shell: bash
-      run: echo "${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[!inputs.working_directory || (inputs.working_directory == github.workspace)] }}"
-
     - name: Build the binary
       uses: actions-rs/cargo@v1
       env: 
         MACOSX_DEPLOYMENT_TARGET: "11.6"
       with:
         command: build
-        args: --release ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[!inputs.working_directory || (inputs.working_directory == github.workspace)] }}
+        args: --release --manifest-path "${{ inputs.working_directory }}/Cargo.toml"
 
     - name: Upload the binary
       uses: actions/upload-artifact@v2
