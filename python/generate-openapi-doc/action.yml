@@ -23,7 +23,6 @@ on:
       cli-name:
         description: The name of the CLI for this project
         required: true
-    secrets:
       private-package-repo-username:
         required: false
       private-package-repo-password:

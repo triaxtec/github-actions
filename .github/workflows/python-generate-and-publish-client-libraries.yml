@@ -42,6 +42,7 @@ jobs:
         uses: triaxtec/github-actions/python/generate-openapi-doc@TSD-274-reusable-workflows
         with:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          private-package-repo-username: ${{ secrets.private-package-repo-username }}
           cli-name: ${{ inputs.cli-name }}
 
       - name: Install pipx
@@ -63,6 +64,10 @@ jobs:
     steps:
     - name: Generate OpenAPI Document
       uses: triaxtec/github-actions/python/generate-openapi-doc@TSD-274-reusable-workflows
+      with:
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          cli-name: ${{ inputs.cli-name }}
 
     - name: Set up Node
       uses: actions/setup-node@v2.1.4
