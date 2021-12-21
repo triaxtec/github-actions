@@ -44,8 +44,8 @@ runs:
       uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
-        private-package-repo-username: ${{ secrets.private-package-repo-username }}
-        private-package-repo-password: ${{ secrets.private-package-repo-password }}
+        private-package-repo-username: ${{ inputs.private-package-repo-username }}
+        private-package-repo-password: ${{ inputs.private-package-repo-password }}
         extras: ${{ inputs.extras }}
         working-directory: ${{ inputs.working-directory }}
 
