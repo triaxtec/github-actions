@@ -26,7 +26,7 @@ runs:
   steps:
       - name: Install build dependencies
         run: sudo apt install pkg-config libudev-dev -y
-        if: runner.os == 'ubuntu-latest'
+        if: runner.os == 'Linux'
 
       - name: Install Rust Toolchain
         uses: actions-rs/toolchain@v1
