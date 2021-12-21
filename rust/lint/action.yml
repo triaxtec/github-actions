@@ -17,11 +17,16 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Test
+      run: echo ${{ inputs.working_directory }}
+      shell: bash
+
     - name: Run clippy lints
       uses: actions-rs/clippy-check@v1
       with:
         token: ${{ inputs.github_token }}
         args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory == github.workspace] }} ${{ inputs.clippy_args }}
+    
     - name: Run rustfmt check
       uses: actions-rs/cargo@v1
       with:
