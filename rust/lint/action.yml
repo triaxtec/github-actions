@@ -18,8 +18,8 @@ runs:
   using: composite
   steps:
     - name: Test
-      run: echo ${{ inputs.working_directory }}
-      
+      run: echo "abc${{ inputs.working_directory }}def"
+
     - name: Run clippy lints
       uses: actions-rs/clippy-check@v1
       with:
