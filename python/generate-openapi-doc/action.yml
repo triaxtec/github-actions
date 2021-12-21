@@ -20,6 +20,9 @@ on:
         description: The working directory where this action should run. Defaults to the root of the git repository.
         required: false
         default: "."
+      cli-name:
+        description: The name of the CLI for this project
+        required: true
     secrets:
       private-package-repo-username:
         required: false

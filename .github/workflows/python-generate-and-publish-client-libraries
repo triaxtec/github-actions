@@ -3,14 +3,6 @@ name: Build and Publish Client Libraries
 on: 
   workflow_call:
     inputs:
-      start-services-with-docker-compose:
-        required: false
-        type: boolean
-        default: false
-      custom-pre-checks-script:
-        required: false
-        type: string
-        default: ""
       module:
         required: true
         type: string
@@ -88,7 +80,7 @@ jobs:
       uses: openapi-generators/openapitools-generator-action@v1.1.1
       with:
         generator: typescript-angular
-        config-file: generator-config.yml
+        config-file: angular-generator-config.yml
 
     - name: Publish Angular Client Library
       run: |
