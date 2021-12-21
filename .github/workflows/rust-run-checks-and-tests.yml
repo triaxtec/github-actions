@@ -19,7 +19,7 @@ on:
         required: false
         default: ${{ github.workspace }}
     secrets:
-      github_token:
+      github-token:
         description: "GitHub token, i.e. secrets.GITHUB_TOKEN. Is passed to the clippy check to annotate pull requests"
         required: true
 
@@ -47,7 +47,7 @@ jobs:
       - name: Run lints
         uses: triaxtec/github-actions/rust/lint@TSD-274-reusable-workflows
         with:
-          github_token: ${{ secrets.github_token }}
+          github_token: ${{ secrets.github-token }}
           clippy_args: ${{ inputs.clippy_args }}
           working_directory: ${{ inputs.working_directory }}
 

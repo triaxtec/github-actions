@@ -1,0 +1,43 @@
+name: Build Binaries and Upload them as Artifacts
+
+on:
+  workflow_call:
+    inputs:
+      extra-ubuntu-build-dependencies:
+        description: "Build dependencies on ubuntu that need to be installed"
+        type: string
+        required: false
+
+    secrets:
+      ssh-private-key:
+        description: "SSH key used to pull private dependencies from GitHub"
+        required: true
+
+jobs:
+    build-and-upload:
+      strategy:
+        matrix:
+          os: [ windows-latest, ubuntu-latest, macos-latest ]
+      name: Build Binary for ${{ matrix.os }}
+      runs-on: ${{ matrix.os }}
+      
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Add SSH key so cargo can access private repos
+          uses: webfactory/ssh-agent@v0.5.3
+          with:
+            ssh-private-key: ${{ secrets.ssh-private-key }}
+
+        - name: Install build dependencies
+          run: sudo apt install pkg-config libudev-dev ${{ inputs.extra-ubuntu-build-dependencies }} -y
+          if: matrix.os == 'ubuntu-latest'
+
+        - name: Setup Rust and Install Dependencies
+          uses: triaxtec/github-actions/rust/setup@TSD-274-reusable-workflows
+        
+        - name: Build and Upload
+          uses: triaxtec/github-actions/rust/build-and-upload@TSD-274-reusable-workflows
+          with:
+            binary_name: eat
