@@ -15,7 +15,7 @@ runs:
   steps:
     - name: Authenticate NPM Registry
       shell: bash
-      run: echo "//${{inputs.npm-registry-url}}/:_authToken=${{inputs.npm-registry-pull-token}}" > .npmrc
+      run: echo "//${{inputs.npm-registry-url}}/:_authToken=${{inputs.npm-registry-pull-token}}" >> .npmrc
 
     - run: npm config set registry https://${{inputs.npm-registry-url}}/
       shell: bash
