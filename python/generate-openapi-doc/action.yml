@@ -51,10 +51,13 @@ runs:
         working-directory: ${{ inputs.working-directory }}
 
     - name: Use test_config as config
+      shell: bash
       run: mv tests/test_config.yml config.yml
 
     - name: Build Code
+      shell: bash
       run: poetry run ${{ inputs.cli-name }} build
 
     - name: Generate OpenAPI Doc
+      shell: bash
       run: poetry run ${{ inputs.cli-name }} openapi
