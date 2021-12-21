@@ -18,6 +18,7 @@ runs:
   using: composite
   steps:
     - name: Test
+      shell: bash
       run: echo "abc${{ inputs.working_directory }}def"
 
     - name: Run clippy lints
