@@ -42,17 +42,17 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Rust and Install Dependencies
-        uses: triaxtec/github-actions/rust/setup
+        uses: triaxtec/github-actions/rust/setup@TSD-274-reusable-workflows
 
       - name: Run lints
-        uses: triaxtec/github-actions/rust/lint@v2
+        uses: triaxtec/github-actions/rust/lint@TSD-274-reusable-workflows
         with:
           github_token: ${{ secrets.github_token }}
           clippy_args: ${{ inputs.clippy_args }}
           working_directory: ${{ inputs.working_directory }}
 
       - name: Run tests
-        uses: triaxtec/github-actions/rust/test@v2
+        uses: triaxtec/github-actions/rust/test@TSD-274-reusable-workflows
         with:
           use_tool_cache: ${{ inputs.use_tool_cache }}
           working_directory: ${{ inputs.working_directory }}
