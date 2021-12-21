@@ -3,14 +3,6 @@ name: Build and Publish Client Libraries
 on: 
   workflow_call:
     inputs:
-      module:
-        required: true
-        type: string
-      additional-modules-to-lint:
-        description: Additional modules to be linted using the standard ruleset (i.e. not the ones used for linting unit tests).
-        required: false
-        type: string
-        default: ""
       dependency-hash-version:
         required: false
         type: string
@@ -20,21 +12,18 @@ on:
         type: string
         required: false
         default: ""
-      exclude-dev-dependencies:
-        description: If set to true, poetry install will be called with the --no-dev
-        type: string
-        required: false
-        default: "false"
       extras:
         description: Extras to include when installing this package
         type: string
         required: false
         default: NOT_SPECIFIED
-      working-directory:
-        description: The working directory where this action should run. Defaults to the root of the git repository.
+      expected-python-client-package-name:
+        description: What you expect the name of the python client package to be
         type: string
-        required: false
-        default: "."
+        required: true
+      cli-name:
+        description: The name of the CLI for this project
+        required: true
     secrets:
       private-package-repo-username:
         required: false
@@ -50,6 +39,9 @@ jobs:
     steps:
       - name: Generate OpenAPI Document
         uses: triaxtec/github-actions/python/generate-openapi-doc
+        with:
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          cli-name: ${{ inputs.cli-name }}
 
       - name: Install pipx
         run: python -m pip install --user pipx
@@ -62,7 +54,7 @@ jobs:
         with:
           token: ${{ secrets.private-package-repo-push-token }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
-          dir: ./triax-inventory-api-client
+          dir: ./${{ inputs.expected-python-client-package-name }}
 
   build-and-publish-angular-client:
     name: Angular Client Library
