@@ -1,0 +1,49 @@
+name: Run Rust Checks and Tests
+
+on:
+  workflow_call:
+    inputs:
+      clippy_args:
+        description: "Any extra arguments to pass to clippy."
+        type: string
+        required: false
+        default: "--all-features"
+      use_tool_cache:
+        description: "Whether to attempt to install cargo-all-features from the tool cache before compiling"
+        type: boolean
+        required: false
+        default: "true"
+      working_directory:
+        description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
+        type: string
+        required: false
+        default: ${{ github.workspace }}
+    secrets:
+      github_token:
+        description: "GitHub token, i.e. secrets.GITHUB_TOKEN. Is passed to the clippy check to annotate pull requests"
+        required: true
+
+jobs:
+  checks:
+    name: Run Styling/Typing/Lint Checks and Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Rust and Install Dependencies
+        uses: triaxtec/github-actions/rust/setup
+
+      - name: Run lints
+        uses: triaxtec/github-actions/rust/lint@v2
+        with:
+          github_token: ${{ secrets.github_token }}
+          clippy_args: ${{ inputs.clippy_args }}
+          working_directory: ${{ inputs.working_directory }}
+
+      - name: Run tests
+        uses: triaxtec/github-actions/rust/test@v2
+        with:
+          use_tool_cache: ${{ inputs.use_tool_cache }}
+          working_directory: ${{ inputs.working_directory }}
