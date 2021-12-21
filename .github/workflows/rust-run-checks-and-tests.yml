@@ -12,7 +12,7 @@ on:
         description: "Whether to attempt to install cargo-all-features from the tool cache before compiling"
         type: boolean
         required: false
-        default: "true"
+        default: true
       working_directory:
         description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
         type: string
