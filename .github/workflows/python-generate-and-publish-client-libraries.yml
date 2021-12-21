@@ -83,7 +83,7 @@ jobs:
     - name: Publish Angular Client Library
       run: |
         cd typescript-angular-client
-        echo "//npm.fury.io/triaxtec/:_authToken=${{ secrets.GEMFURY_PUSH_TOKEN }}" > .npmrc
+        echo "//npm.fury.io/triaxtec/:_authToken=${{ secrets.private-package-repo-push-token }}" > .npmrc
         npm install
         npm remove @types/node
         npm add -D @types/node@12.20.20
