@@ -12,7 +12,7 @@ inputs:
   working_directory:
     description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
     required: false
-    default: ${{ github.workspace }}
+    default: NOT_SPECIFIED
 
 runs:
   using: composite
@@ -22,13 +22,27 @@ runs:
       shell: bash
 
     - name: Run clippy lints
-      uses: actions-rs/clippy-check@v1
+      if: ${{ inputs.working_directory == 'NOT_SPECIFIED'}}
       with:
         token: ${{ inputs.github_token }}
-        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory && (inputs.working_directory == github.workspace)] }} ${{ inputs.clippy_args }}
+        args:  ${{ inputs.clippy_args }}
+
+    - name: Run clippy lints
+      if: ${{ inputs.working_directory != 'NOT_SPECIFIED'}}
+      with:
+        token: ${{ inputs.github_token }}
+        args: --manifest-path ${{inputs.working_directory}}/Cargo.toml ${{ inputs.clippy_args }}
     
     - name: Run rustfmt check
+      if: ${{ inputs.working_directory == 'NOT_SPECIFIED'}}
       uses: actions-rs/cargo@v1
       with:
         command: fmt
-        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[inputs.working_directory && (inputs.working_directory == github.workspace)] }}  -- --check
+        args: --manifest-path ${{inputs.working_directory}}/Cargo.toml  -- --check
+
+    - name: Run rustfmt check
+      if: ${{ inputs.working_directory != 'NOT_SPECIFIED'}}
+      uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: -- --check
