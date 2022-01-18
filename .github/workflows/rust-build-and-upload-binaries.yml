@@ -25,9 +25,9 @@ jobs:
             ssh-private-key: ${{ secrets.ssh-private-key }}
 
         - name: Setup Rust and Install Dependencies
-          uses: triaxtec/github-actions/rust/setup@TSD-274-reusable-workflows
+          uses: triaxtec/github-actions/rust/setup@v2
         
         - name: Build and Upload
-          uses: triaxtec/github-actions/rust/build-and-upload@TSD-274-reusable-workflows
+          uses: triaxtec/github-actions/rust/build-and-upload@v2
           with:
             binary_name: eat

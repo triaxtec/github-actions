@@ -42,7 +42,7 @@ jobs:
         key: poetry-${{ inputs.dependency-hash-version }}-${{ hashFiles('poetry.lock') }}
 
     - name: Setup Python and Poetry and Install Dependencies
-      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
+      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ secrets.private-package-repo-username }}
@@ -50,7 +50,7 @@ jobs:
         extras: ${{ inputs.extras }}
 
     - name: Build and Publish
-      uses: triaxtec/github-actions/python/publish-package@TSD-274-reusable-workflows
+      uses: triaxtec/github-actions/python/publish-package@v2
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         token: ${{ secrets.private-package-repo-push-token }}

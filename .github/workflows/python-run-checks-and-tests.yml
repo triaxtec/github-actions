@@ -69,7 +69,7 @@ jobs:
           key: poetry-${{ inputs.dependency-hash-version }}-${{ hashFiles('poetry.lock') }}
 
       - name: Setup python and poetry and install dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
         with:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
@@ -83,7 +83,7 @@ jobs:
         run: ${{ inputs.custom-pre-checks-script }}
 
       - name: Run Checks and Tests
-        uses: triaxtec/github-actions/python/run-checks@TSD-274-reusable-workflows
+        uses: triaxtec/github-actions/python/run-checks@v2
         with:
           module: ${{ inputs.module }}
           additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}

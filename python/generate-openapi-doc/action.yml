@@ -38,7 +38,7 @@ runs:
         key: poetry-${{ inputs.dependency-hash-version }}-${{ hashFiles('poetry.lock') }}
 
     - name: Setup python and poetry and install dependencies
-      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
+      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ inputs.private-package-repo-username }}
