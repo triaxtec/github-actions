@@ -79,6 +79,7 @@ jobs:
       with:
         generator: typescript-angular
         config-file: angular-generator-config.yml
+        generator-tag: v5.3.0
 
     - name: Publish Angular Client Library
       run: |
