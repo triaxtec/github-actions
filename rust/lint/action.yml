@@ -1,0 +1,29 @@
+name: Run Rust lints
+description: Runs clippy and rustfmt lints
+
+inputs:
+  github_token:
+    description: "GitHub token, i.e. secrets.GITHUB_TOKEN. Is passed to the clippy check to annotate pull requests"
+    required: true
+  clippy_args:
+    description: "Any extra arguments to pass to clippy."
+    required: false
+    default: "--all-features"
+  working_directory:
+    description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
+    required: false
+    default: ${{ github.workspace }}
+
+runs:
+  using: composite
+  steps:
+    - name: Run clippy lints
+      uses: actions-rs/clippy-check@v1
+      with:
+        token: ${{ inputs.github_token }}
+        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[!inputs.working_directory || (inputs.working_directory == github.workspace)] }} ${{ inputs.clippy_args }}
+    - name: Run rustfmt check
+      uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: ${{ fromJSON(format('["--manifest-path \"{0}/Cargo.toml\"",""]', inputs.working_directory))[!inputs.working_directory || (inputs.working_directory == github.workspace)] }}  -- --check

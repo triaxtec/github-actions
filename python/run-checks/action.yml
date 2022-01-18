@@ -4,13 +4,14 @@ inputs:
   module:
     description: The name of the module to run the checks on
     required: true
+  additional-modules-to-lint:
+    description: Additional modules to be linted using the standard ruleset (i.e. not the ones used for linting unit tests).
+    required: false
+    default: ""
   test-dir:
     description: The directory (or path from the project root) containing the pytests to run. Defaults to "tests".
     required: false
     default: tests
-    
-
-
 
 runs:
   using: composite
@@ -23,13 +24,23 @@ runs:
       shell: bash
       run: poetry run isort . --check
 
-    - name: Run flake8
+    - name: bandit
       shell: bash
-      run: poetry run flake8 ${{ inputs.module }}
+      run: poetry run bandit -r ${{ inputs.module }} -c pyproject.toml
+
+    - name: Lint (source)
+      shell: bash
+      run: poetry run pylint ${{ inputs.module }} ${{ inputs.additional-modules-to-lint}}
+
+    - name: Lint (tests)
+      shell: bash
+      run: poetry run pylint ${{ inputs.test-dir }} --disable="R0201,W0201,W0212,W0621,W0404,C0302"
 
     - name: Run safety
       shell: bash
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin
+      # 42194: Ignore safety advisory for encrypted values in sqlalchemy-utils, a feature we don't use.
+      # 42050: Ignore safety advisory for more secure cookies in werkzeug, another unused feature.
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050
 
     - name: Run mypy
       shell: bash
@@ -38,7 +49,3 @@ runs:
     - name: Run pytest
       shell: bash
       run: poetry run pytest --cov=${{ inputs.module }} --cov-report=term-missing ${{ inputs.test-dir }}
-      
-    - name: Generate coverage report
-      shell: bash
-      run: poetry run coverage xml

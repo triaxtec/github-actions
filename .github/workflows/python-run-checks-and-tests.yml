@@ -1,0 +1,94 @@
+name: Run Styling/Typing/Lint Checks and Tests
+
+on: 
+  workflow_call:
+    inputs:
+      start-services-with-docker-compose:
+        required: false
+        type: boolean
+        default: false
+      custom-pre-checks-script:
+        required: false
+        type: string
+        default: ""
+      module:
+        required: true
+        type: string
+      additional-modules-to-lint:
+        description: Additional modules to be linted using the standard ruleset (i.e. not the ones used for linting unit tests).
+        required: false
+        type: string
+        default: ""
+      dependency-hash-version:
+        required: false
+        type: string
+        default: "v1"
+      private-package-repo-url:
+        description: The url of the private package repository you want to add to poetry. You must also specify `private-package-repo-username`
+        type: string
+        required: false
+        default: ""
+      exclude-dev-dependencies:
+        description: If set to true, poetry install will be called with the --no-dev
+        type: string
+        required: false
+        default: "false"
+      extras:
+        description: Extras to include when installing this package
+        type: string
+        required: false
+        default: NOT_SPECIFIED
+      working-directory:
+        description: The working directory where this action should run. Defaults to the root of the git repository.
+        type: string
+        required: false
+        default: "."
+    secrets:
+      private-package-repo-username:
+        required: false
+      private-package-repo-password:
+        required: false
+  
+jobs:
+  checks:
+    name: Run Styling/Typing/Lint Checks and Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Start Services
+        if: inputs.start-services-with-docker-compose
+        run: docker-compose up -d
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ./.venv
+          key: poetry-${{ inputs.dependency-hash-version }}-${{ hashFiles('poetry.lock') }}
+
+      - name: Setup python and poetry and install dependencies
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-274-reusable-workflows
+        with:
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          private-package-repo-password: ${{ secrets.private-package-repo-password }}
+          exclude-dev-dependencies: ${{ inputs.exclude-dev-dependencies }}
+          extras: ${{ inputs.extras }}
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Custom pre-checks script
+        if: inputs.custom-pre-checks-script
+        run: ${{ inputs.custom-pre-checks-script }}
+
+      - name: Run Checks and Tests
+        uses: triaxtec/github-actions/python/run-checks@TSD-274-reusable-workflows
+        with:
+          module: ${{ inputs.module }}
+          additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+
+      - name: Uninstall package before caching
+        run: poetry run pip uninstall ${{ inputs.module }} -y

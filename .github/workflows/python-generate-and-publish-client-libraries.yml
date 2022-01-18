@@ -1,0 +1,92 @@
+name: Build and Publish Client Libraries
+
+on: 
+  workflow_call:
+    inputs:
+      dependency-hash-version:
+        required: false
+        type: string
+        default: "v1"
+      private-package-repo-url:
+        description: The url of the private package repository you want to add to poetry. You must also specify `private-package-repo-username`
+        type: string
+        required: false
+        default: ""
+      extras:
+        description: Extras to include when installing this package
+        type: string
+        required: false
+        default: NOT_SPECIFIED
+      expected-python-client-package-name:
+        description: What you expect the name of the python client package to be
+        type: string
+        required: true
+      cli-name:
+        description: The name of the CLI for this project
+        type: string
+        required: true
+    secrets:
+      private-package-repo-username:
+        required: false
+      private-package-repo-password:
+        required: false
+      private-package-repo-push-token:
+        required: true
+
+jobs:
+  build-python-client:
+    name: Python Client Library
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate OpenAPI Document
+        uses: triaxtec/github-actions/python/generate-openapi-doc@TSD-274-reusable-workflows
+        with:
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          cli-name: ${{ inputs.cli-name }}
+
+      - name: Install pipx
+        run: python -m pip install --user pipx
+
+      - name: Generate Python Client
+        run: python -m pipx run openapi-python-client generate --config python-generator-config.yml --path openapi.json
+
+      - name: Publish Python Client
+        uses: triaxtec/github-actions/python/publish-package@TSD-274-reusable-workflows
+        with:
+          token: ${{ secrets.private-package-repo-push-token }}
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          dir: ./${{ inputs.expected-python-client-package-name }}
+
+  build-and-publish-angular-client:
+    name: Angular Client Library
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate OpenAPI Document
+      uses: triaxtec/github-actions/python/generate-openapi-doc@TSD-274-reusable-workflows
+      with:
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          cli-name: ${{ inputs.cli-name }}
+
+    - name: Set up Node
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: '14'
+
+    - name: Generate Angular Client Library
+      uses: openapi-generators/openapitools-generator-action@v1.1.1
+      with:
+        generator: typescript-angular
+        config-file: angular-generator-config.yml
+        generator-tag: v5.3.0
+
+    - name: Publish Angular Client Library
+      run: |
+        cd typescript-angular-client
+        echo "//npm.fury.io/triaxtec/:_authToken=${{ secrets.private-package-repo-push-token }}" > .npmrc
+        npm install
+        npm remove @types/node
+        npm add -D @types/node@12.20.20
+        npm run build
+        npm publish dist

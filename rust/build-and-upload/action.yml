@@ -1,0 +1,30 @@
+name: Release Rust Binary
+description: "Build and upload a release build of a Rust binary"
+
+inputs:
+  binary_name:
+    description: "The name of the binary that will be built"
+    required: true
+  working_directory:
+    description: "Working directory to run the action in. Defaults to $GITHUB_WORKSPACE"
+    required: false
+    default: ${{ github.workspace }}
+
+runs:
+  using: composite
+  steps:
+    - name: Build the binary
+      uses: actions-rs/cargo@v1
+      env: 
+        MACOSX_DEPLOYMENT_TARGET: "11.6"
+      with:
+        command: build
+        args: --release --manifest-path "${{ inputs.working_directory }}/Cargo.toml"
+
+    - name: Upload the binary
+      uses: actions/upload-artifact@v2
+      # The grossness with fromJSON works around the fact that conditionals are not supported
+      # by implicitly indexing an array (false == 0, true == 1).
+      with:
+        name: ${{ inputs.binary_name }}${{ fromJSON(format('["_{0}",".exe"]', runner.os))[runner.os == 'Windows'] }}
+        path: target/release/${{ inputs.binary_name }}${{ fromJSON('["", ".exe"]')[runner.os == 'Windows'] }}
