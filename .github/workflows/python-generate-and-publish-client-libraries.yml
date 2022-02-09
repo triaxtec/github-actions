@@ -25,6 +25,16 @@ on:
         description: The name of the CLI for this project
         type: string
         required: true
+      python-generator-version:
+        description: The version of openapi-python-client to use to build the python client library
+        type: string
+        required: false
+        default: "0.11.1"
+      angular-generator-version:
+        description: The version of OpenAPITools Generator to use to build the angular client library
+        type: string
+        required: true
+        default: "5.1.1"
     secrets:
       private-package-repo-username:
         required: false
@@ -45,11 +55,8 @@ jobs:
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
           cli-name: ${{ inputs.cli-name }}
 
-      - name: Install pipx
-        run: python -m pip install --user pipx
-
       - name: Generate Python Client
-        run: python -m pipx run openapi-python-client generate --config python-generator-config.yml --path openapi.json
+        run: pipx run openapi-python-client --spec openapi-python-client==${{ inputs.python-generator-version }} generate --config python-generator-config.yml --path openapi.json
 
       - name: Publish Python Client
         uses: triaxtec/github-actions/python/publish-package@v2
@@ -79,7 +86,7 @@ jobs:
       with:
         generator: typescript-angular
         config-file: angular-generator-config.yml
-        generator-tag: v5.3.0
+        generator-tag: v${{ inputs.angular-generator-version }}
 
     - name: Publish Angular Client Library
       run: |
