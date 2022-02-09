@@ -56,7 +56,7 @@ jobs:
           cli-name: ${{ inputs.cli-name }}
 
       - name: Generate Python Client
-        run: pipx run openapi-python-client --spec openapi-python-client==${{ inputs.python-generator-version }} generate --config python-generator-config.yml --path openapi.json
+        run: pipx run --spec openapi-python-client==${{ inputs.python-generator-version }} openapi-python-client generate --config python-generator-config.yml --path openapi.json
 
       - name: Publish Python Client
         uses: triaxtec/github-actions/python/publish-package@v2
