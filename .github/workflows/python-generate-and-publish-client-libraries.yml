@@ -33,7 +33,7 @@ on:
       angular-generator-version:
         description: The version of OpenAPITools Generator to use to build the angular client library
         type: string
-        required: true
+        required: false
         default: "5.1.1"
     secrets:
       private-package-repo-username:
