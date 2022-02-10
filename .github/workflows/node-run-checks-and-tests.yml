@@ -1,0 +1,37 @@
+name: Run Styling/Typing/Lint Checks and Tests
+
+on: 
+  workflow_call:
+    inputs:
+      node-version:
+        required: false
+        type: string
+        default: "14"
+    secrets:
+      npm-registry-url:
+        required: true
+      npm-registry-pull-token:
+        required: true
+
+  
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node and Install Dependencies
+        uses: triaxtec/github-actions/node/setup-node-and-install-dependencies-with-authenticated-registry@TSD-526-reusable-node-workflows
+        with:
+          node-version: ${{ inputs.node-version }}
+          npm-registry-url: ${{ secrets.npm-registry-url }}
+          npm-registry-pull-token: ${{ inputs.npm-registry-pull-token }}
+
+      - name: Create dummy environment file
+        shell: bash
+        run: touch src/environments/environment.ts
+
+      - name: Run Code Checks and Tests
+        run: npm run check:ci
