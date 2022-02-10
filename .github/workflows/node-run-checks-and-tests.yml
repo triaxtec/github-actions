@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           npm-registry-url: ${{ secrets.npm-registry-url }}
-          npm-registry-pull-token: ${{ inputs.npm-registry-pull-token }}
+          npm-registry-pull-token: ${{ secrets.npm-registry-pull-token }}
 
       - name: Create dummy environment file
         shell: bash
