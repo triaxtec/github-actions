@@ -1,0 +1,35 @@
+name: Setup Node and Install Dependencies with Authenticated Registry
+description: Sets up Node and installs dependencies with an NPM registry
+
+inputs:
+  node-version:
+    description: The version of node to install
+    required: false
+    default: "14"
+  npm-registry-url:
+    description: The protocol relative (without http/s) NPM registry url
+    required: true
+  npm-registry-pull-token:
+    description: The token used to authenticate with the NPM registry
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Authenticate NPM Registry
+      shell: bash
+      run: echo "//${{inputs.npm-registry-url}}/:_authToken=${{inputs.npm-registry-pull-token}}" >> .npmrc
+
+    - name: Set NPM Registry
+      shell: bash
+      run: npm config set registry https://${{inputs.npm-registry-url}}/
+
+    - name: Install Dependencies
+      shell: bash
+      # https://docs.npmjs.com/cli/v8/commands/npm-ci
+      run: npm ci

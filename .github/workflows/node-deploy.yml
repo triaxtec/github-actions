@@ -1,0 +1,68 @@
+name: Deploy
+
+on: 
+  workflow_call:
+    inputs:
+      project-name:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+      node-version:
+        required: false
+        type: string
+        default: "14"
+    secrets:
+      npm-registry-url:
+        required: true
+      npm-registry-pull-token:
+        required: true
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      SENTRY_ORG:
+        required: true
+      SENTRY_AUTH_TOKEN:
+        required: true
+
+  
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node and Install Dependencies
+        uses: triaxtec/github-actions/node/setup-node-and-install-dependencies-with-authenticated-registry@TSD-526-reusable-node-workflows
+        with:
+          node-version: ${{ inputs.node-version }}
+          npm-registry-url: ${{ secrets.npm-registry-url }}
+          npm-registry-pull-token: ${{ secrets.npm-registry-pull-token }}
+
+      - name: Create dummy environment file
+        run: touch src/environments/environment.ts
+
+      - name: Set SENTRY_VERSION envvar
+        run: echo "SENTRY_VERSION=${{ inputs.project-name }}@$(node -pe 'require("./package.json").version')" >> $GITHUB_ENV
+
+      - name: Deploy
+        run: npm run deploy ${{ inputs.environment }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_PROJECT: ${{ inputs.project-name }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        with:
+          environment: qa
+          sourcemaps: ./dist/${{ inputs.project-name }}
+          version: ${{ env.SENTRY_VERSION }}
