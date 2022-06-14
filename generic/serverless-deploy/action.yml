@@ -1,0 +1,43 @@
+name: Deploy using Serverless
+description: Deploys the project to AWS Lambda using the serverless package + a serverless.yml file
+
+inputs:
+  environment:
+    description: The environment to deploy to
+    required: true
+  working-directory:
+    description: The working directory where this action should run. Defaults to the root of the git repository.
+    required: false
+    default: "."
+  AWS_ACCESS_KEY_ID:
+    description: ID of the access key used to deploy to AWS
+    required: true
+  AWS_SECRET_ACCESS_KEY:
+    description: The secret key used to deploy to AWS
+    required: true
+  aws-default-region:
+    description: The token used to authenticate with the NPM registry
+    required: false
+    default: "us-east-1"
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Serverless Dependencies
+      uses: actions/cache@v2
+      with:
+        path: ./node_modules
+        key: npm-${{ hashFiles('package-lock.json') }}
+
+    - name: Install Serverless and Plugins
+      shell: bash
+      run: npm install
+
+    - name: Serverless Deploy to ${{ inputs.environment }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: $(npm bin)/serverless deploy --stage ${{ inputs.environment }}
+      env:
+        AWS_DEFAULT_REGION: ${{ inputs.aws-default-region }}
+        AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.AWS_SECRET_ACCESS_KEY }}

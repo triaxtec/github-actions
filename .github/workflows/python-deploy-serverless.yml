@@ -7,8 +7,12 @@ on:
         required: true
         type: string
       cli-name:
-        required: true
+        required: false
         type: string
+      working-directory:
+        required: false
+        type: string
+        default: "."
       dependency-hash-version:
         required: false
         type: string
@@ -40,30 +44,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache dependencies (Node)
-        uses: actions/cache@v2
-        with:
-          path: ./node_modules
-          key: npm-${{ hashFiles('package-lock.json') }}
-
       - name: Setup Python and Poetry and Install Dependencies
         uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
         with:
+          working-directory: ${{ inputs.working-directory }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
 
       - name: Build Code
+        working-directory: ${{ inputs.working-directory }}
+        if: ${{ inputs.cli-name != '' }}
         run: poetry run ${{ inputs.cli-name }} build
 
       - name: Generate Requirements
+        working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
-      - name: Install Serverless and Plugins
-        run: npm install
-
       - name: Serverless Deploy to ${{ inputs.environment }}
-        run: $(npm bin)/serverless deploy --stage ${{ inputs.environment }}
-        env:
+        uses: triaxtec/github-actions/generic/serverless-deploy@TSD-1048-make-serverless-deploy-more-generic
+        with:
+          environment: ${{ inputs.environment }}
+          working-directory: ${{ inputs.working-directory }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ inputs.aws-default-region }}
