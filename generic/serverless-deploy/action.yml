@@ -38,6 +38,6 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: $(npm bin)/serverless deploy --stage ${{ inputs.environment }}
       env:
-        aws-default-region: ${{ inputs.aws-default-region }}
+        AWS_DEFAULT_REGION: ${{ inputs.aws-default-region }}
         AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.AWS_SECRET_ACCESS_KEY }}
