@@ -60,9 +60,6 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
-      - name: Install Serverless and Plugins
-        run: npm install
-
       - name: Serverless Deploy to ${{ inputs.environment }}
         uses: triaxtec/github-actions/generic/serverless-deploy@TSD-1048-make-serverless-deploy-more-generic
         with:
