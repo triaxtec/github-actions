@@ -11,6 +11,7 @@ inputs:
   test-dir:
     description: The directory (or path from the project root) containing the pytests to run. Defaults to "tests".
     required: false
+    default: tests
 
 runs:
   using: composite
