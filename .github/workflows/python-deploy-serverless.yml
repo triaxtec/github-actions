@@ -61,7 +61,7 @@ jobs:
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
       - name: Serverless Deploy to ${{ inputs.environment }}
-        uses: triaxtec/github-actions/generic/serverless-deploy@TSD-1048-make-serverless-deploy-more-generic
+        uses: triaxtec/github-actions/generic/serverless-deploy@v2
         with:
           environment: ${{ inputs.environment }}
           working-directory: ${{ inputs.working-directory }}
