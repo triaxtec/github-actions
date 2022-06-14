@@ -53,7 +53,7 @@ jobs:
 
       - name: Build Code
         working-directory: ${{ inputs.working-directory }}
-        if: ${{ inputs.cli-name != "" }}
+        if: ${{ inputs.cli-name != '' }}
         run: poetry run ${{ inputs.cli-name }} build
 
       - name: Generate Requirements
