@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node and Install Dependencies
-        uses: triaxtec/github-actions/node/setup-node-and-install-dependencies-with-authenticated-registry@TSD-526-reusable-node-workflows
+        uses: triaxtec/github-actions/node/setup-node-and-install-dependencies-with-authenticated-registry@v2
         with:
           node-version: ${{ inputs.node-version }}
           npm-registry-url: ${{ secrets.npm-registry-url }}
