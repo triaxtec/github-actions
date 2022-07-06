@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: "14"
+      aws-region:
+        required: false
+        type: string
+        default: "us-east-1"
     secrets:
       npm-registry-url:
         required: true
@@ -55,6 +59,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ inputs.aws-region }}
 
       - name: Sentry release
         uses: getsentry/action-release@v1
