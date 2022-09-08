@@ -40,7 +40,7 @@ jobs:
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ secrets.private-package-repo-username }}
-        depedency-hash-version: ${{ inputs.dependency-hash-version }}
+        dependency-hash-version: ${{ inputs.dependency-hash-version }}
         exclude-dev-dependencies: true
         extras: ${{ inputs.extras }}
 

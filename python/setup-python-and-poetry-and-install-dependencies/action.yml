@@ -49,7 +49,7 @@ runs:
         package-manager: poetry
         dependency-hash-version: ${{ inputs.dependency-hash-version }}
         dependency-lock-file: poetry.lock
-        dev-dependencies-included: ${{ inputs.exclude-dev-dependencies }}
+        dev-dependencies-included: ${{ !inputs.exclude-dev-dependencies }}
 
     - name: Install and Configure Poetry
       shell: bash
