@@ -36,7 +36,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup Python and Poetry and Install Dependencies
-      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
+      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-1127-cache-dev-dependencies-separately
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ secrets.private-package-repo-username }}

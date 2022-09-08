@@ -39,7 +39,7 @@ runs:
         python-version: ${{ inputs.python-version }}
 
     - name: Cache dependencies
-      uses: triaxtec/github-actions/generic/cache-dependencies@v2
+      uses: triaxtec/github-actions/generic/cache-dependencies@TSD-1127-cache-dev-dependencies-separately
       with:
         path: ./.venv
         package-manager: poetry
