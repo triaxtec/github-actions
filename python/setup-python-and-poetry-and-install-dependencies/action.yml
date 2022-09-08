@@ -37,6 +37,16 @@ runs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ inputs.python-version }}
+
+    - name: Cache dependencies
+      uses: triaxtec/github-actions/generic/cache-dependencies@v2
+      with:
+        path: ./.venv
+        package-manager: poetry
+        dependency-hash-version: ${{ inputs.dependency-hash-version }}
+        dependency-lock-file: poetry.lock
+        dev-dependencies-included: ${{ inputs.exclude-dev-dependencies != "false" }}
+
     - name: Install and Configure Poetry
       shell: bash
       working-directory: "${{inputs.working-directory}}"

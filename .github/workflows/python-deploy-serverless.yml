@@ -50,6 +50,8 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          dependency-hash-version: ${{ inputs.dependency-hash-version }}
+          exclude-dev-dependencies: true
 
       - name: Build Code
         working-directory: ${{ inputs.working-directory }}
