@@ -26,7 +26,13 @@ runs:
       uses: actions/cache@v2
       with:
         path: ${{ inputs.path }}
-        key: ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-${{ hashFiles(inputs.dependency-lock-file) }}-dev-deps-included=${{ inputs.dev-dependencies-included }}
+        key: ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-dev-deps-included=${{ inputs.dev-dependencies-included }}-${{ hashFiles(inputs.dependency-lock-file) }}
+        # Explanation of restore keys, in order:
+        # 1. For test runs, will always miss and move on to the next restore key. For publish/deploy runs, will get the cached deps of the test run that
+        #     ran right before it, and just needs to remove the dev dependencies.
+        # 2. Fairly standard restore key - for both, get the most recent cached deps that match my dev-deps-included val but with an older lock file hash.
+        # 3. Worst case scenario, get the most recent cached dependencies we can find regardless of whether or not development dependencies are included.
         restore-keys: |
-          ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-${{ hashFiles(inputs.dependency-lock-file) }}-dev-deps-included=
+          ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-dev-deps-included=${{ !inputs.dev-dependencies-included }}-${{ hashFiles(inputs.dependency-lock-file) }}
+          ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-dev-deps-included=${{ inputs.dev-dependencies-included }}-
           ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-
