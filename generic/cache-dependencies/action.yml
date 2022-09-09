@@ -29,4 +29,3 @@ runs:
         key: ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-dev-deps-included=${{ inputs.dev-dependencies-included }}-${{ hashFiles(inputs.dependency-lock-file) }}
         restore-keys: |
           ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-dev-deps-included=${{ inputs.dev-dependencies-included }}-
-          ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-
