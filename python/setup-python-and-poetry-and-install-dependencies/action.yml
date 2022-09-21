@@ -43,13 +43,12 @@ runs:
         python-version: ${{ inputs.python-version }}
 
     - name: Cache dependencies
-      uses: triaxtec/github-actions/generic/cache-dependencies@TSD-1127-cache-dev-dependencies-separately
+      uses: triaxtec/github-actions/generic/cache-dependencies@TSD-1141-add-fallback-dependency-cache-keys
       with:
         path: ./.venv
         package-manager: poetry
         dependency-hash-version: ${{ inputs.dependency-hash-version }}
         dependency-lock-file: poetry.lock
-        dev-dependencies-included: ${{ inputs.exclude-dev-dependencies == 'false' }}
 
     - name: Install and Configure Poetry
       shell: bash

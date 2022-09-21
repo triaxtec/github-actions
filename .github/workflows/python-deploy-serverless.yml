@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Python and Poetry and Install Dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-1127-cache-dev-dependencies-separately
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@TSD-1141-add-fallback-dependency-cache-keys
         with:
           working-directory: ${{ inputs.working-directory }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}

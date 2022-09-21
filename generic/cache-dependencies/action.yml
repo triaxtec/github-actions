@@ -15,9 +15,6 @@ inputs:
   dependency-lock-file:
     description: The file to be hashed to determine if dependencies have changed
     required: true
-  dev-dependencies-included:
-    description: Whether or not development-only depedencies are installed. Separates dependency caches with/without dev dependencies to reduce setup time.
-    required: true
 
 runs:
   using: composite
@@ -26,6 +23,6 @@ runs:
       uses: actions/cache@v2
       with:
         path: ${{ inputs.path }}
-        key: ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-dev-deps-included=${{ inputs.dev-dependencies-included }}-${{ hashFiles(inputs.dependency-lock-file) }}
+        key: ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-${{ hashFiles(inputs.dependency-lock-file) }}
         restore-keys: |
-          ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-dev-deps-included=${{ inputs.dev-dependencies-included }}-
+          ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-
