@@ -13,6 +13,10 @@ inputs:
     description: The password for the private package repository you want to add to poetry
     required: false
     default: ""
+  dependency-hash-version:
+    description: A quick way to generate a completely new cache if something goes awry and loading from partial cache keys is causing issues.
+    required: false
+    default: "v1"
   exclude-dev-dependencies:
     description: If set to true, poetry install will be called with the --no-dev
     required: false
@@ -37,6 +41,15 @@ runs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ inputs.python-version }}
+
+    - name: Cache dependencies
+      uses: triaxtec/github-actions/generic/cache-dependencies@v2
+      with:
+        path: ./.venv
+        package-manager: poetry
+        dependency-hash-version: ${{ inputs.dependency-hash-version }}
+        dependency-lock-file: poetry.lock
+
     - name: Install and Configure Poetry
       shell: bash
       working-directory: "${{inputs.working-directory}}"

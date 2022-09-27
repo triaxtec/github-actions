@@ -1,0 +1,28 @@
+name: Cache Dependencies
+description: Caches Dependencies
+
+inputs:
+  path:
+    description: The directory to cache
+    required: true
+  package-manager:
+    description: The package manager used to install the dependencies
+    required: true
+  dependency-hash-version:
+    description: A quick way to generate a completely new cache if something goes awry and loading from partial cache keys is causing issues.
+    required: false
+    default: "v1"
+  dependency-lock-file:
+    description: The file to be hashed to determine if dependencies have changed
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ${{ inputs.path }}
+        key: ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-${{ hashFiles(inputs.dependency-lock-file) }}
+        restore-keys: |
+          ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-
