@@ -43,7 +43,7 @@ runs:
         python-version: ${{ inputs.python-version }}
 
     - name: Cache dependencies
-      uses: triaxtec/github-actions/generic/cache-dependencies@TSD-1141-add-fallback-dependency-cache-keys
+      uses: triaxtec/github-actions/generic/cache-dependencies@v2
       with:
         path: ./.venv
         package-manager: poetry
