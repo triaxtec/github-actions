@@ -1,0 +1,21 @@
+name: Bump Version and Tag
+
+on: 
+  workflow_call
+
+jobs:
+  bump-version-and-commit:
+    name: Bump Project Version, Commit, and Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Bump Project Version
+        id: bump-version
+        uses: triaxtec/github-actions/python/bump-project-version@TSD-1125-branching-and-versioning-automation
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Bump version to v.${{ steps.bump-version.outputs.new-project-version }}
+          tagging_message: v.${{ steps.bump-version.outputs.new-project-version }}

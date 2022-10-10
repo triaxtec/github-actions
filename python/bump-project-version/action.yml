@@ -1,0 +1,25 @@
+name: Bump Project Version
+description: Bumps the version of the project - defaults to bumping the release candidate number. Outputs the new version
+
+inputs:
+  rule:
+    description: The version bump rule to run.
+    required: false
+    default: "prerelease"
+
+outputs:
+  new-project-version:
+    description: The version of the current project
+    value: ${{ steps.get-version.outputs.project-version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Bump Project Version
+      id: bump-version
+      shell: bash
+      run: poetry version ${{ inputs.rule }}
+
+    - name: Get New Project Version
+      id: get-version
+      uses: triaxtec/github-actions/python/get-project-version@TSD-1125-branching-and-versioning-automation

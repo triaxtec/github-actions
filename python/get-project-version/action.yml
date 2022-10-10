@@ -1,0 +1,15 @@
+name: Get Project Version
+description: Gets the version of the current project and stores it as an output, to be used by other actions/workflow steps.
+
+outputs:
+  project-version:
+    description: The version of the current project
+    value: ${{ steps.get-version.outputs.project-version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get Project Version
+      id: get-version
+      shell: bash
+      run: echo "::set-output name=project-version::$(poetry version -s)"
