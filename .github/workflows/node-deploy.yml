@@ -35,7 +35,7 @@ on:
 jobs:
   deploy:
     name: Deploy to ${{ inputs.environment }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
