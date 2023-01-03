@@ -21,7 +21,7 @@ runs:
       run: |
         cd ${{ inputs.dir }}
         if [[ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]]; then
-          echo "Uploading to private repo"
+          echo "Uploading to private repo (${{inputs.private-package-repo-url}})"
           poetry config repositories.private ${{ inputs.private-package-repo-url }}
           poetry config http-basic.private ${{ inputs.token }} ${{ inputs.token }}
           poetry publish --build -r private
