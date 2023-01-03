@@ -20,7 +20,7 @@ runs:
       shell: bash
       run: |
         cd ${{ inputs.dir }}
-        if [[ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]]; then
+        if [ ! -z "${{inputs.private-package-repo-url}}" ] && [ "${{inputs.private-package-repo-url}}" != "NOT_SPECIFIED" ]; then
           echo "Uploading to private repo (${{inputs.private-package-repo-url}})"
           poetry config repositories.private ${{ inputs.private-package-repo-url }}
           poetry config http-basic.private ${{ inputs.token }} ${{ inputs.token }}
