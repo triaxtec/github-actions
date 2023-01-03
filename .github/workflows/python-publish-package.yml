@@ -11,7 +11,7 @@ on:
         description: The url of the private package repository you want to add to poetry. You must also specify `private-package-repo-username`
         required: false
         type: string
-        default: "NOT_SPECIFIED"
+        default: ""
       extras:
         description: Extras to include when installing this package
         type: string
