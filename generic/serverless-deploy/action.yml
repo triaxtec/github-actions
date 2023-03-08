@@ -36,7 +36,7 @@ runs:
     - name: Serverless Deploy to ${{ inputs.environment }}
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      run: $(npm bin)/serverless deploy --stage ${{ inputs.environment }}
+      run: ./node_modules/.bin/serverless deploy --stage ${{ inputs.environment }}
       env:
         AWS_DEFAULT_REGION: ${{ inputs.aws-default-region }}
         AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}
