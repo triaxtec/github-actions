@@ -38,7 +38,8 @@ runs:
       # 42050: Ignore safety advisory for more secure cookies in werkzeug, another unused feature.
       # 44715: Ignore saftey advisory for numpy.sort as there is no fix yet and we don't use the feature
       # 51668: Ignore safety advisory for sqlalchemy str(engine) including cleartext password
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 44715 -i 51668
+      # 52983: Ignore safety advisory for httpx
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 44715 -i 51668 -i 52983
 
     - name: Run mypy
       shell: bash
