@@ -43,7 +43,7 @@ jobs:
     container: amazonlinux:2
     steps:
       - name: Install Missing Dependencies
-        run: yum install -y tar gzip
+        run: yum install -y tar gzip gcc
       - name: Checkout code
         uses: actions/checkout@v2
 
