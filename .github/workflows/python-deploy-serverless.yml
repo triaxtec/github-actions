@@ -47,13 +47,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Python and Poetry and Install Dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@update-poetry
-        with:
-          working-directory: ${{ inputs.working-directory }}
-          private-package-repo-url: ${{ inputs.private-package-repo-url }}
-          private-package-repo-username: ${{ secrets.private-package-repo-username }}
-          dependency-hash-version: ${{ inputs.dependency-hash-version }}
+      - name: Install and Configure Poetry
+        shell: bash
+        working-directory: ${{inputs.working-directory}}
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry==1.4.1 --upgrade
+          poetry config virtualenvs.in-project true
+          if [ -n "${{inputs.private-package-repo-url}}" ]; then
+            if [ -z "${{secrets.private-package-repo-username}}" ]; then
+              echo "private-package-repo-username is required when private-package-repo-url is provided" 1>&2
+              exit 1
+            fi
+
+            poetry config repositories.private "${{ inputs.private-package-repo-url }}"
+            poetry config http-basic.private "${{ secrets.private-package-repo-username }}" "${{ inputs.private-package-repo-password }}"
+          fi
+      - name: Install Python Dependencies
+        shell: bash
+        working-directory: "${{inputs.working-directory}}"
+        run: |
+          COMMAND="poetry install"
+          if [[ "${{inputs.exclude-dev-dependencies}}" != "false" ]]; then
+            COMMAND="$COMMAND --no-dev"
+          fi
+          if [[ "${{inputs.extras}}" != "NOT_SPECIFIED" ]]; then
+            COMMAND="$COMMAND -E ${{inputs.extras}}"
+          fi
+          eval $COMMAND
 
       - name: Build Code
         working-directory: ${{ inputs.working-directory }}

@@ -37,10 +37,10 @@ inputs:
 runs:
   using: composite
   steps:
-    # - name: Set up Python
-    #   uses: actions/setup-python@v2
-    #   with:
-    #     python-version: ${{ inputs.python-version }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ inputs.python-version }}
 
     # - name: Cache dependencies
     #   uses: triaxtec/github-actions/generic/cache-dependencies@v2
