@@ -42,13 +42,13 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
-    - name: Cache dependencies
-      uses: triaxtec/github-actions/generic/cache-dependencies@v2
-      with:
-        path: ./.venv
-        package-manager: poetry
-        dependency-hash-version: ${{ inputs.dependency-hash-version }}
-        dependency-lock-file: poetry.lock
+    # - name: Cache dependencies
+    #   uses: triaxtec/github-actions/generic/cache-dependencies@v2
+    #   with:
+    #     path: ./.venv
+    #     package-manager: poetry
+    #     dependency-hash-version: ${{ inputs.dependency-hash-version }}
+    #     dependency-lock-file: poetry.lock
 
     - name: Install and Configure Poetry
       shell: bash
