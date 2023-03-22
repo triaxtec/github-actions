@@ -59,7 +59,7 @@ jobs:
           fi
       - name: Install Python Dependencies
         shell: bash
-        working-directory: "${{inputs.working-directory}}"
+        working-directory: ${{inputs.working-directory}}
         run: |
           COMMAND="poetry install"
           if [[ "${{inputs.exclude-dev-dependencies}}" != "false" ]]; then
