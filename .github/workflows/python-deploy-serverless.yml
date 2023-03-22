@@ -58,7 +58,6 @@ jobs:
           private-package-repo-password: ${{secrets.private-package-repo-password}}
           working-directory: ${{inputs.working-directory}}
           dependency-hash-version: ${{inputs.dependency-hash-version}}
-          exclude-dev-dependencies: ${{inputs.exclude-dev-dependencies}}
 
       - name: Build Code
         working-directory: ${{ inputs.working-directory }}
