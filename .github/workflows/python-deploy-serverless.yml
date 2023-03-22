@@ -49,6 +49,7 @@ jobs:
 
       - name: Install and Configure Poetry
         shell: bash
+        working-directory: ${{inputs.working-directory}}
         run: |
           pip install poetry==1.4.1 --upgrade
           poetry config virtualenvs.in-project true
@@ -63,6 +64,7 @@ jobs:
           fi
       - name: Install Python Dependencies
         shell: bash
+        working-directory: ${{inputs.working-directory}}
         run: |
           ls . -A
           COMMAND="poetry install"
@@ -75,10 +77,12 @@ jobs:
           eval $COMMAND
 
       - name: Build Code
+        working-directory: ${{ inputs.working-directory }}
         if: ${{ inputs.cli-name != '' }}
         run: poetry run ${{ inputs.cli-name }} build
 
       - name: Generate Requirements
+        working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
       - name: Serverless Deploy to ${{ inputs.environment }}
@@ -86,5 +90,6 @@ jobs:
         with:
           environment: ${{ inputs.environment }}
           aws-default-region: ${{ inputs.aws-default-region }}
+          working-directory: ${{ inputs.working-directory }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
