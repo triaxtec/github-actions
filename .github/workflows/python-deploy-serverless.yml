@@ -44,6 +44,9 @@ jobs:
     container: amazon/aws-lambda-python:3.8
 
     steps:
+      - name: Install tar and gzip
+        run: yum install -y tar gzip
+        
       - name: Checkout code
         uses: actions/checkout@v2
 
