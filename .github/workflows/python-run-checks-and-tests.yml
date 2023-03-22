@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Start Services
         if: inputs.start-services-with-docker-compose
@@ -72,7 +72,7 @@ jobs:
         run: ${{ inputs.custom-pre-checks-script }}
 
       - name: Run Checks and Tests
-        uses: triaxtec/github-actions/python/run-checks@v2
+        uses: triaxtec/github-actions/python/run-checks@v3
         with:
           module: ${{ inputs.module }}
           additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}

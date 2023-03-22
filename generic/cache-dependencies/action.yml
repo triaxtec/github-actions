@@ -20,7 +20,7 @@ runs:
   using: composite
   steps:
     - name: Cache dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ inputs.path }}
         key: ${{ inputs.package-manager }}-${{ inputs.dependency-hash-version }}-${{ hashFiles(inputs.dependency-lock-file) }}

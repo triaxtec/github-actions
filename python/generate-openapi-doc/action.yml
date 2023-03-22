@@ -29,7 +29,7 @@ runs:
   using: composite
   steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup python and poetry and install dependencies
       uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3

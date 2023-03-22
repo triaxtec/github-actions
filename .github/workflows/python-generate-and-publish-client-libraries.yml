@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate OpenAPI Document
-        uses: triaxtec/github-actions/python/generate-openapi-doc@v2
+        uses: triaxtec/github-actions/python/generate-openapi-doc@v3
         with:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
@@ -59,7 +59,7 @@ jobs:
         run: pipx run --spec openapi-python-client==${{ inputs.python-generator-version }} openapi-python-client generate --config python-generator-config.yml --path openapi.json
 
       - name: Publish Python Client
-        uses: triaxtec/github-actions/python/publish-package@v2
+        uses: triaxtec/github-actions/python/publish-package@v3
         with:
           token: ${{ secrets.private-package-repo-push-token }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
@@ -70,14 +70,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate OpenAPI Document
-      uses: triaxtec/github-actions/python/generate-openapi-doc@v2
+      uses: triaxtec/github-actions/python/generate-openapi-doc@v3
       with:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
           cli-name: ${{ inputs.cli-name }}
 
     - name: Set up Node
-      uses: actions/setup-node@v2.1.4
+      uses: actions/setup-node@v3.1.4
       with:
         node-version: '14'
 

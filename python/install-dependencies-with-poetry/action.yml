@@ -38,7 +38,7 @@ runs:
   using: composite
   steps:
     - name: Cache dependencies
-      uses: triaxtec/github-actions/generic/cache-dependencies@v2
+      uses: triaxtec/github-actions/generic/cache-dependencies@v3
       with:
         path: ./.venv
         package-manager: poetry

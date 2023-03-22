@@ -48,7 +48,7 @@ jobs:
         run: yum install -y tar gzip
         
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Dependencies with Poetry
         uses: triaxtec/github-actions/python/install-dependencies-with-poetry@v3
@@ -74,7 +74,7 @@ jobs:
           yum -y install nodejs
 
       - name: Serverless Deploy to ${{ inputs.environment }}
-        uses: triaxtec/github-actions/generic/serverless-deploy@v2
+        uses: triaxtec/github-actions/generic/serverless-deploy@v3
         with:
           environment: ${{ inputs.environment }}
           aws-default-region: ${{ inputs.aws-default-region }}
