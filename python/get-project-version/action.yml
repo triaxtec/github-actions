@@ -12,4 +12,4 @@ runs:
     - name: Get Project Version
       id: get-version
       shell: bash
-      run: echo "::set-output name=project-version::$(poetry version -s)"
+      run: echo "project-version=$(poetry version -s)" >> $GITHUB_OUTPUT
