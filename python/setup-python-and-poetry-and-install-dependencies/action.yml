@@ -47,7 +47,7 @@ runs:
         python-version: ${{ inputs.python-version }}
 
     - name: Install Dependencies with Poetry
-      uses: triaxtec/github-actions/python/install-dependencies-with-poetry@update-poetry
+      uses: triaxtec/github-actions/python/install-dependencies-with-poetry@v3
       with:
         poetry-version:  ${{inputs.poetry-version}}
         private-package-repo-url: ${{inputs.private-package-repo-url}}
