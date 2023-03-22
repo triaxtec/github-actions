@@ -6,7 +6,7 @@ on:
       environment:
         required: true
         type: string
-      cli-name:
+      predeploy-script:
         required: false
         type: string
       working-directory:
@@ -59,10 +59,10 @@ jobs:
           working-directory: ${{inputs.working-directory}}
           dependency-hash-version: ${{inputs.dependency-hash-version}}
 
-      - name: Build Code
+      - name: Run Predeploy Script
         working-directory: ${{ inputs.working-directory }}
-        if: ${{ inputs.cli-name != '' }}
-        run: poetry run ${{ inputs.cli-name }} build
+        if: ${{ inputs.predeploy-script != '' }}
+        run: ${{ inputs.predeploy-script }}
 
       - name: Generate Requirements
         working-directory: ${{ inputs.working-directory }}
