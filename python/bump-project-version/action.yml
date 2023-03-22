@@ -22,4 +22,4 @@ runs:
 
     - name: Get New Project Version
       id: get-version
-      uses: triaxtec/github-actions/python/get-project-version@TSD-1125-branching-and-versioning-automation
+      uses: triaxtec/github-actions/python/get-project-version@v3
