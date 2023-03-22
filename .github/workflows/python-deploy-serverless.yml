@@ -68,8 +68,10 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
-      - name: Install tar and gzip
-        run: yum install -y npm
+      - name: Install npm
+        run: |
+          curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
+          yum -y install nodejs
 
       - name: Serverless Deploy to ${{ inputs.environment }}
         uses: triaxtec/github-actions/generic/serverless-deploy@v2
