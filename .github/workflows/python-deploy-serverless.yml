@@ -40,13 +40,8 @@ jobs:
   build-and-deploy:
     name: Deploy to ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    container: amazonlinux:2
+    container: amazon/aws-lambda-python:3.8
     steps:
-      - name: Install Missing Dependencies
-        run: yum install -y tar gzip gcc pip
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Install and Configure Poetry
         shell: bash
         working-directory: ${{inputs.working-directory}}
