@@ -39,9 +39,14 @@ on:
 jobs:
   build-and-deploy:
     name: Deploy to ${{ inputs.environment }}
+    
     runs-on: ubuntu-latest
     container: amazon/aws-lambda-python:3.8
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install and Configure Poetry
         shell: bash
         run: |
