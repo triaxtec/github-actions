@@ -50,34 +50,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install and Configure Poetry
-        shell: bash
-        working-directory: ${{inputs.working-directory}}
-        run: |
-          pip install poetry==1.4.1 --upgrade
-          poetry config virtualenvs.in-project true
-          if [ -n "${{inputs.private-package-repo-url}}" ]; then
-            if [ -z "${{secrets.private-package-repo-username}}" ]; then
-              echo "private-package-repo-username is required when private-package-repo-url is provided" 1>&2
-              exit 1
-            fi
-
-            poetry config repositories.private "${{ inputs.private-package-repo-url }}"
-            poetry config http-basic.private "${{ secrets.private-package-repo-username }}" "${{ inputs.private-package-repo-password }}"
-          fi
-      - name: Install Python Dependencies
-        shell: bash
-        working-directory: ${{inputs.working-directory}}
-        run: |
-          ls . -A
-          COMMAND="poetry install"
-          if [[ "${{inputs.exclude-dev-dependencies}}" != "false" ]]; then
-            COMMAND="$COMMAND --no-dev"
-          fi
-          if [[ "${{inputs.extras}}" != "NOT_SPECIFIED" ]]; then
-            COMMAND="$COMMAND -E ${{inputs.extras}}"
-          fi
-          eval $COMMAND
+      - name: Install Dependencies with Poetry
+        uses: triaxtec/github-actions/python/install-dependencies-with-poetry@update-poetry
+        with:
+          private-package-repo-url: ${{inputs.private-package-repo-url}}
+          private-package-repo-username: ${{secrets.private-package-repo-username}}
+          private-package-repo-password: ${{secrets.private-package-repo-password}}
+          working-directory: ${{inputs.working-directory}}
+          dependency-hash-version: ${{inputs.dependency-hash-version}}
+          exclude-dev-dependencies: ${{inputs.exclude-dev-dependencies}}
+          extras: ${{inputs.extras}}
 
       - name: Build Code
         working-directory: ${{ inputs.working-directory }}
