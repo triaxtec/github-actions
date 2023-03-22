@@ -29,7 +29,7 @@ on:
         description: The version of openapi-python-client to use to build the python client library
         type: string
         required: false
-        default: "0.11.1"
+        default: "0.13.2"
       angular-generator-version:
         description: The version of OpenAPITools Generator to use to build the angular client library
         type: string
