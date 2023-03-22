@@ -58,7 +58,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Setup python and poetry and install dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
         with:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}

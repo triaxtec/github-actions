@@ -39,18 +39,25 @@ on:
 jobs:
   build-and-deploy:
     name: Deploy to ${{ inputs.environment }}
+    
     runs-on: ubuntu-latest
+    container: amazon/aws-lambda-python:3.8
+
     steps:
+      - name: Install tar and gzip
+        run: yum install -y tar gzip
+        
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Python and Poetry and Install Dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
+      - name: Install Dependencies with Poetry
+        uses: triaxtec/github-actions/python/install-dependencies-with-poetry@v3
         with:
-          working-directory: ${{ inputs.working-directory }}
-          private-package-repo-url: ${{ inputs.private-package-repo-url }}
-          private-package-repo-username: ${{ secrets.private-package-repo-username }}
-          dependency-hash-version: ${{ inputs.dependency-hash-version }}
+          private-package-repo-url: ${{inputs.private-package-repo-url}}
+          private-package-repo-username: ${{secrets.private-package-repo-username}}
+          private-package-repo-password: ${{secrets.private-package-repo-password}}
+          working-directory: ${{inputs.working-directory}}
+          dependency-hash-version: ${{inputs.dependency-hash-version}}
 
       - name: Build Code
         working-directory: ${{ inputs.working-directory }}
@@ -60,6 +67,11 @@ jobs:
       - name: Generate Requirements
         working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
+
+      - name: Install npm
+        run: |
+          curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
+          yum -y install nodejs
 
       - name: Serverless Deploy to ${{ inputs.environment }}
         uses: triaxtec/github-actions/generic/serverless-deploy@v2
