@@ -20,6 +20,11 @@ runs:
       shell: bash
       run: poetry version ${{ inputs.rule }}
 
+    - name: Fix Prerelease Version Format
+      if: ${{ inputs.rule == 'prerelease' }}
+      shell: bash
+      run: poetry version $(echo "$(poetry version -s)" | sed 's/rc/-rc./g')
+
     - name: Get New Project Version
       id: get-version
       uses: triaxtec/github-actions/python/get-project-version@v3
