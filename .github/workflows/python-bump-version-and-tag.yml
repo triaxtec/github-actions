@@ -1,7 +1,10 @@
 name: Bump Version and Tag
 
 on: 
-  workflow_call
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
 
 jobs:
   bump-version-and-commit:
@@ -11,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
