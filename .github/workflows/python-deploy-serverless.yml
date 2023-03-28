@@ -41,11 +41,11 @@ jobs:
     name: Deploy to ${{ inputs.environment }}
     
     runs-on: ubuntu-latest
-    container: amazon/aws-lambda-python:3.8
+    # container: amazon/aws-lambda-python:3.8
 
     steps:
-      - name: Install tar and gzip
-        run: yum install -y tar gzip
+      # - name: Install tar and gzip
+      #   run: yum install -y tar gzip
         
       - name: Checkout code
         uses: actions/checkout@v3
@@ -64,14 +64,14 @@ jobs:
         if: ${{ inputs.predeploy-script != '' }}
         run: ${{ inputs.predeploy-script }}
 
-      - name: Generate Requirements
-        working-directory: ${{ inputs.working-directory }}
-        run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
+      # - name: Generate Requirements
+      #   working-directory: ${{ inputs.working-directory }}
+      #   run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
-      - name: Install npm
-        run: |
-          curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
-          yum -y install nodejs
+      # - name: Install npm
+      #   run: |
+      #     curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
+      #     yum -y install nodejs
 
       - name: Serverless Deploy to ${{ inputs.environment }}
         uses: triaxtec/github-actions/generic/serverless-deploy@v3
