@@ -50,14 +50,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Dependencies with Poetry
-        uses: triaxtec/github-actions/python/install-dependencies-with-poetry@v3
+      - name: Setup python and poetry and install dependencies
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
         with:
-          private-package-repo-url: ${{inputs.private-package-repo-url}}
-          private-package-repo-username: ${{secrets.private-package-repo-username}}
-          private-package-repo-password: ${{secrets.private-package-repo-password}}
-          working-directory: ${{inputs.working-directory}}
-          dependency-hash-version: ${{inputs.dependency-hash-version}}
+          private-package-repo-url: ${{ inputs.private-package-repo-url }}
+          private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          private-package-repo-password: ${{ secrets.private-package-repo-password }}
+          working-directory: ${{ inputs.working-directory }}
+          dependency-hash-version: ${{ inputs.dependency-hash-version }}
 
       - name: Run Predeploy Script
         working-directory: ${{ inputs.working-directory }}
