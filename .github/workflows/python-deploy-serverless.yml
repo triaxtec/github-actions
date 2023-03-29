@@ -54,6 +54,7 @@ jobs:
           private-package-repo-password: ${{ secrets.private-package-repo-password }}
           working-directory: ${{ inputs.working-directory }}
           dependency-hash-version: ${{ inputs.dependency-hash-version }}
+          exclude-dev-dependencies: true
 
       - name: Run Predeploy Script
         working-directory: ${{ inputs.working-directory }}
