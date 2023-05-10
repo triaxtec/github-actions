@@ -1,0 +1,35 @@
+name: Remove Remaining Release Candidate Tags
+description: Cleans up leftover release candidate (-rc.X) tags after the version in question has been released
+
+inputs:
+  released-version-tag:
+    description: The version that was just released (e.g. v.1.2.0) for which we should clean up release candidate tags (e.g. v.1.2.0-rc.1)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Remove leftover rc tags
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}          
+        script: |
+          github.repos.listTags({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          }).then(({ data }) => {
+            const tagsToDelete = data.filter(tag => tag.name.startsWith("${{ inputs.released-version }}-rc."));
+            for (const tag of tagsToDelete) {
+              github.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/${tag.name}`,
+              }).then(() => {
+                console.log(`Deleted tag ${tag.name}`);
+              }).catch((err) => {
+                console.error(`Error deleting tag ${tag.name}: ${err}`);
+              });
+            }
+          }).catch((err) => {
+            console.error(`Error listing tags: ${err}`);
+          });
