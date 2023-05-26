@@ -84,7 +84,7 @@ jobs:
         run: ${{ inputs.custom-pre-checks-script }}
 
       - name: Run Checks and Tests
-        uses: triaxtec/github-actions/python/run-checks@v3
+        uses: triaxtec/github-actions/python/run-checks@TSD-1611-enforce-python-project-coverage
         with:
           module: ${{ inputs.module }}
           additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}
