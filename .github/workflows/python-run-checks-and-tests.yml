@@ -45,6 +45,7 @@ on:
         default: "3.8"
       skip-coverage-check:
         description: Set to true to disable enforcement of 100% code coverage.
+        type: boolean
         required: false
         default: false
 
