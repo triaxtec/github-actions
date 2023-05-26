@@ -35,6 +35,10 @@ on:
         type: string
         required: false
         default: "5.1.1"
+      python-version:
+        description: The version of python to install/use
+        required: false
+        default: "3.8"
     secrets:
       private-package-repo-username:
         required: false
@@ -51,6 +55,7 @@ jobs:
       - name: Generate OpenAPI Document
         uses: triaxtec/github-actions/python/generate-openapi-doc@v3
         with:
+          python-version: ${{ inputs.python-version }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
           cli-name: ${{ inputs.cli-name }}
@@ -72,6 +77,7 @@ jobs:
     - name: Generate OpenAPI Document
       uses: triaxtec/github-actions/python/generate-openapi-doc@v3
       with:
+          python-version: ${{ inputs.python-version }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
           cli-name: ${{ inputs.cli-name }}
