@@ -59,6 +59,6 @@ runs:
       run: poetry run pytest --cov=${{ inputs.module }} --cov-report=term-missing ${{ inputs.test-dir }}
 
     - name: Enforce 100% Test Coverage
-      if: ${{ inputs.skip-coverage-check != 'false' }}
+      if: ${{ inputs.skip-coverage-check == 'false' }}
       shell: bash
       run: poetry run coverage report --fail-under=100
