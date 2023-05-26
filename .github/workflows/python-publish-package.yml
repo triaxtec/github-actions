@@ -24,6 +24,7 @@ on:
         default: "."
       python-version:
         description: The version of python to install/use
+        type: string
         required: false
         default: "3.8"
     secrets:
