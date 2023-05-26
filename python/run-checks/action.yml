@@ -60,4 +60,5 @@ runs:
 
     - name: Enforce 100% Test Coverage
       if: ${{ !inputs.skip-coverage-check }}
+      shell: bash
       run: poetry run coverage report --fail-under=100
