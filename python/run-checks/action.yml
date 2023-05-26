@@ -12,6 +12,10 @@ inputs:
     description: The directory (or path from the project root) containing the pytests to run. Defaults to "tests".
     required: false
     default: tests
+  skip-coverage-check:
+    description: Set to true to disable enforcement of 100% code coverage.
+    required: false
+    default: false
 
 runs:
   using: composite
@@ -53,3 +57,7 @@ runs:
     - name: Run pytest
       shell: bash
       run: poetry run pytest --cov=${{ inputs.module }} --cov-report=term-missing ${{ inputs.test-dir }}
+
+    - name: Enforce 100% Test Coverage
+      if: ${{ !inputs.skip-coverage-check }}
+      run: poetry run coverage report --fail-under=100
