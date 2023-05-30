@@ -43,6 +43,12 @@ on:
         type: string
         required: false
         default: "3.8"
+      skip-coverage-check:
+        description: Set to true to disable enforcement of 100% code coverage.
+        type: boolean
+        required: false
+        default: false
+
     secrets:
       private-package-repo-username:
         required: false
@@ -82,6 +88,7 @@ jobs:
         with:
           module: ${{ inputs.module }}
           additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}
+          skip-coverage-check: ${{ inputs.skip-coverage-check }}
         env:
           AWS_DEFAULT_REGION: us-east-1
 
