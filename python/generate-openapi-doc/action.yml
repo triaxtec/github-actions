@@ -24,6 +24,10 @@ inputs:
     required: false
   private-package-repo-password:
     required: false
+  python-version:
+    description: The version of python to install/use
+    required: false
+    default: "3.8"
 
 runs:
   using: composite
@@ -34,6 +38,7 @@ runs:
     - name: Setup python and poetry and install dependencies
       uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
       with:
+        python-version: ${{ inputs.python-version }}
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ inputs.private-package-repo-username }}
         private-package-repo-password: ${{ inputs.private-package-repo-password }}

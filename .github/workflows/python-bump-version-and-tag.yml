@@ -2,6 +2,12 @@ name: Bump Version and Tag
 
 on: 
   workflow_call:
+    inputs:
+      python-version:
+        description: The version of python to install/use
+        type: string
+        required: false
+        default: "3.8"
     secrets:
       GH_TOKEN:
         required: true
