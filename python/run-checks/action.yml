@@ -45,7 +45,8 @@ runs:
       # 53689: Temp ignore for redis
       # 53813: Temp ignore for sentry
       # 54456: Temp ignore for werkzeug
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 44715 -i 51668 -i 52983 -i 53325 -i 53326 -i 54456 -i 53868 -i 53869 -i 53812 -i 54456
+      # 55261: Flask vulnerability , don't need the requirements as it doesn't impact the flow
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 44715 -i 51668 -i 52983 -i 53325 -i 53326 -i 54456 -i 53868 -i 53869 -i 53812 -i 54456 -i 55261
 
     - name: Run mypy
       shell: bash
