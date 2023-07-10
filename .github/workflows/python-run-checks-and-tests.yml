@@ -38,6 +38,17 @@ on:
         type: string
         required: false
         default: "."
+      python-version:
+        description: The version of python to install/use
+        type: string
+        required: false
+        default: "3.8"
+      skip-coverage-check:
+        description: Set to true to disable enforcement of 100% code coverage.
+        type: boolean
+        required: false
+        default: false
+
     secrets:
       private-package-repo-username:
         required: false
@@ -51,15 +62,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Start Services
         if: inputs.start-services-with-docker-compose
         run: docker-compose up -d
 
       - name: Setup python and poetry and install dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
         with:
+          python-version: ${{ inputs.python-version }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
           private-package-repo-password: ${{ secrets.private-package-repo-password }}
@@ -72,10 +84,11 @@ jobs:
         run: ${{ inputs.custom-pre-checks-script }}
 
       - name: Run Checks and Tests
-        uses: triaxtec/github-actions/python/run-checks@v2
+        uses: triaxtec/github-actions/python/run-checks@v3
         with:
           module: ${{ inputs.module }}
           additional-modules-to-lint: ${{ inputs.additional-modules-to-lint }}
+          skip-coverage-check: ${{ inputs.skip-coverage-check }}
         env:
           AWS_DEFAULT_REGION: us-east-1
 

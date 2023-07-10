@@ -22,6 +22,11 @@ on:
         type: string
         required: false
         default: "."
+      python-version:
+        description: The version of python to install/use
+        type: string
+        required: false
+        default: "3.8"
     secrets:
       private-package-repo-username:
         required: false
@@ -33,11 +38,12 @@ jobs:
     name: Publish Package
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup Python and Poetry and Install Dependencies
-      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
+      uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
       with:
+        python-version: ${{ inputs.python-version }}
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ secrets.private-package-repo-username }}
         dependency-hash-version: ${{ inputs.dependency-hash-version }}
@@ -45,7 +51,7 @@ jobs:
         extras: ${{ inputs.extras }}
 
     - name: Build and Publish
-      uses: triaxtec/github-actions/python/publish-package@v2
+      uses: triaxtec/github-actions/python/publish-package@v3
       with:
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         token: ${{ secrets.private-package-repo-push-token }}

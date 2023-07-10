@@ -12,6 +12,10 @@ inputs:
     description: The directory (or path from the project root) containing the pytests to run. Defaults to "tests".
     required: false
     default: tests
+  skip-coverage-check:
+    description: Set to true to disable enforcement of 100% code coverage.
+    required: false
+    default: false
 
 runs:
   using: composite
@@ -41,7 +45,10 @@ runs:
       # 42194: Ignore safety advisory for encrypted values in sqlalchemy-utils, a feature we don't use.
       # 42050: Ignore safety advisory for more secure cookies in werkzeug, another unused feature.
       # 51668: Ignore safety advisory for sqlalchemy str(engine) including cleartext password
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668
+      # 52983: Ignore safety advisory for httpx <0.23 - we aren't effected + there are breaking changes we aren't ready for
+      # 53332: (Temporary) ignore starlette because there are breaking changes in fastapi we're not ready for
+      # 53310: (Temporary) ignore fastapi because there are breaking changes we're not ready for
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668 -i 52983 -i 53310 -i 53332
 
     - name: Run mypy
       shell: bash
@@ -50,3 +57,8 @@ runs:
     - name: Run pytest
       shell: bash
       run: poetry run pytest --cov=${{ inputs.module }} --cov-report=term-missing ${{ inputs.test-dir }}
+
+    - name: Enforce 100% Test Coverage
+      if: ${{ inputs.skip-coverage-check == 'false' }}
+      shell: bash
+      run: poetry run coverage report --fail-under=100

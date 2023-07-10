@@ -17,7 +17,7 @@ jobs:
       
       steps:
         - name: Checkout code
-          uses: actions/checkout@v2
+          uses: actions/checkout@v3
 
         - name: Add SSH key so cargo can access private repos
           uses: webfactory/ssh-agent@v0.5.3
@@ -25,9 +25,9 @@ jobs:
             ssh-private-key: ${{ secrets.ssh-private-key }}
 
         - name: Setup Rust and Install Dependencies
-          uses: triaxtec/github-actions/rust/setup@v2
+          uses: triaxtec/github-actions/rust/setup@v3
         
         - name: Build and Upload
-          uses: triaxtec/github-actions/rust/build-and-upload@v2
+          uses: triaxtec/github-actions/rust/build-and-upload@v3
           with:
             binary_name: eat

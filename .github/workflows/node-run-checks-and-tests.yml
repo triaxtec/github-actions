@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node and Install Dependencies
-        uses: triaxtec/github-actions/node/setup-node-and-install-dependencies-with-authenticated-registry@v2
+        uses: triaxtec/github-actions/node/setup-node-and-install-dependencies-with-authenticated-registry@v3
         with:
           node-version: ${{ inputs.node-version }}
           npm-registry-url: ${{ secrets.npm-registry-url }}

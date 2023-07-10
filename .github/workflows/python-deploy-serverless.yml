@@ -6,7 +6,7 @@ on:
       environment:
         required: true
         type: string
-      cli-name:
+      predeploy-script:
         required: false
         type: string
       working-directory:
@@ -26,6 +26,11 @@ on:
         type: string
         required: false
         default: "us-east-1"
+      python-version:
+        description: The version of python to install/use
+        type: string
+        required: false
+        default: "3.8"
     secrets:
       private-package-repo-username:
         required: false
@@ -39,30 +44,35 @@ on:
 jobs:
   build-and-deploy:
     name: Deploy to ${{ inputs.environment }}
+    
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Setup Python and Poetry and Install Dependencies
-        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v2
+      - name: Setup python and poetry and install dependencies
+        uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
         with:
-          working-directory: ${{ inputs.working-directory }}
+          python-version: ${{ inputs.python-version }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          private-package-repo-password: ${{ secrets.private-package-repo-password }}
+          working-directory: ${{ inputs.working-directory }}
           dependency-hash-version: ${{ inputs.dependency-hash-version }}
+          exclude-dev-dependencies: true
 
-      - name: Build Code
+      - name: Run Predeploy Script
         working-directory: ${{ inputs.working-directory }}
-        if: ${{ inputs.cli-name != '' }}
-        run: poetry run ${{ inputs.cli-name }} build
+        if: ${{ inputs.predeploy-script != '' }}
+        run: ${{ inputs.predeploy-script }}
 
       - name: Generate Requirements
         working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
       - name: Serverless Deploy to ${{ inputs.environment }}
-        uses: triaxtec/github-actions/generic/serverless-deploy@v2
+        uses: triaxtec/github-actions/generic/serverless-deploy@v3
         with:
           environment: ${{ inputs.environment }}
           aws-default-region: ${{ inputs.aws-default-region }}

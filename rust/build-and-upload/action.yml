@@ -22,7 +22,7 @@ runs:
         args: --release --manifest-path "${{ inputs.working_directory }}/Cargo.toml"
 
     - name: Upload the binary
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       # The grossness with fromJSON works around the fact that conditionals are not supported
       # by implicitly indexing an array (false == 0, true == 1).
       with:
