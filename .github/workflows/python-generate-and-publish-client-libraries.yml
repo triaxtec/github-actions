@@ -83,6 +83,7 @@ jobs:
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
           private-package-repo-username: ${{ secrets.private-package-repo-username }}
           cli-name: ${{ inputs.cli-name }}
+          dependency-hash-version: ${{ inputs.dependency-hash-version }}
 
     - name: Set up Node
       uses: actions/setup-node@v3
