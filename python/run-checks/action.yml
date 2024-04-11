@@ -48,7 +48,10 @@ runs:
       # 52983: Ignore safety advisory for httpx <0.23 - we aren't effected + there are breaking changes we aren't ready for
       # 53332: (Temporary) ignore starlette because there are breaking changes in fastapi we're not ready for
       # 53310: (Temporary) ignore fastapi because there are breaking changes we're not ready for
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668 -i 52983 -i 53310 -i 53332
+      # 64930: (Temporary) ignore fastapi because there are breaking changes we're not ready for
+      # 65213: Ignore safety advisory for pyopenssl - it's not fixed yet
+      # 65293: (Temporary) ignore fastapi because there are breaking changes we're not ready for
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668 -i 52983 -i 53310 -i 53332 -i 65213 -i 64930 -i 65293
 
     - name: Run mypy
       shell: bash
