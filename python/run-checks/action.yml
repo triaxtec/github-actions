@@ -51,7 +51,13 @@ runs:
       # 64930: (Temporary) ignore fastapi because there are breaking changes we're not ready for
       # 65213: Ignore safety advisory for pyopenssl - it's not fixed yet
       # 65293: (Temporary) ignore fastapi because there are breaking changes we're not ready for
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668 -i 52983 -i 53310 -i 53332 -i 65213 -i 64930 -i 65293
+      # 71199: (Temporary) ignore starlette because there are breaking changes we're not ready for
+      # 70612: (Temporary) ignore jinja2 error because there are breaking changes we're not ready for
+      # 70626: (Temporary) ignore pymongo error because we don't use pymongo and should remove it from spotr-models
+      # 71083: (Temporary) need to update version of spotr-models to use new pymysql$a
+      # 68094: (Temporary) ignore starlette because there are breaking changes we're not ready for
+      # 71594: (Temporary) ignore werzkeug update because it requires updating starlette, fastapi, etc.
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668 -i 52983 -i 53310 -i 53332 -i 65213 -i 64930 -i 65293 -i 71199 -i 70612 -i 70626 -i 71083 -i 68094 -i 71594
 
     - name: Run mypy
       shell: bash

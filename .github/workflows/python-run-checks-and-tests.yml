@@ -66,7 +66,7 @@ jobs:
 
       - name: Start Services
         if: inputs.start-services-with-docker-compose
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Setup python and poetry and install dependencies
         uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
