@@ -32,4 +32,4 @@ runs:
     - name: Install Dependencies
       shell: bash
       # https://docs.npmjs.com/cli/v8/commands/npm-ci
-      run: npm ci
+      run: npm ci --registry=https://${{inputs.npm-registry-url}}/
