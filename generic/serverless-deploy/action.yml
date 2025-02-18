@@ -31,7 +31,7 @@ runs:
 
     - name: Install Serverless and Plugins
       shell: bash
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Serverless Deploy to ${{ inputs.environment }}
       shell: bash
