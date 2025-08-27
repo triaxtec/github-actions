@@ -61,7 +61,7 @@ runs:
       run: |
         COMMAND="poetry install"
         if [[ "${{inputs.exclude-dev-dependencies}}" != "false" ]]; then
-          if [[ "${{inputs.poetry-version}} > "2.0.0" ]]; then
+          if [[ "${{inputs.poetry-version}}" > "2.0.0" ]]; then
             COMMAND="$COMMAND --without dev"
           else
             COMMAND="$COMMAND --no-dev"
