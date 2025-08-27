@@ -28,6 +28,11 @@ inputs:
     description: The version of python to install/use
     required: false
     default: "3.8"
+  poetry-version:
+    description: Version of poetry to run
+    type: string
+    required: false
+    default: "1.4.1"
 
 runs:
   using: composite
@@ -39,6 +44,7 @@ runs:
       uses: triaxtec/github-actions/python/setup-python-and-poetry-and-install-dependencies@v3
       with:
         python-version: ${{ inputs.python-version }}
+        poetry-version: ${{ inputs.poetry-version }}
         private-package-repo-url: ${{ inputs.private-package-repo-url }}
         private-package-repo-username: ${{ inputs.private-package-repo-username }}
         private-package-repo-password: ${{ inputs.private-package-repo-password }}
