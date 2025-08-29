@@ -45,6 +45,8 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+      GEMFURY_PULL_TOKEN:
+        required: true
 
 jobs:
   build-and-deploy:
@@ -62,8 +64,10 @@ jobs:
           python-version: ${{ inputs.python-version }}
           poetry-version: ${{ inputs.poetry-version }}
           private-package-repo-url: ${{ inputs.private-package-repo-url }}
-          private-package-repo-username: ${{ secrets.private-package-repo-username }}
-          private-package-repo-password: ${{ secrets.private-package-repo-password }}
+          #private-package-repo-username: ${{ secrets.private-package-repo-username }}
+          #private-package-repo-password: ${{ secrets.private-package-repo-password }}
+          private-package-repo-username: __token__
+          private-package-repo-password: ${{ secrets.GEMFURY_PULL_TOKEN }}
           working-directory: ${{ inputs.working-directory }}
           dependency-hash-version: ${{ inputs.dependency-hash-version }}
           exclude-dev-dependencies: true
