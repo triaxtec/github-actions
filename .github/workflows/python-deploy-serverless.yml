@@ -77,6 +77,9 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
+      - name: Sign into AWS
+        run: docker logout public.ecr.aws
+
       - name: Serverless Deploy to ${{ inputs.environment }}
         uses: triaxtec/github-actions/generic/serverless-deploy@v3
         with:
