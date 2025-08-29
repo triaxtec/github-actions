@@ -33,6 +33,10 @@ runs:
       shell: bash
       run: npm install --legacy-peer-deps
 
+    - name: Sign out of AWS
+      shell: bash
+      run: docker logout public.ecr.aws
+
     - name: Serverless Deploy to ${{ inputs.environment }}
       shell: bash
       working-directory: ${{ inputs.working-directory }}
