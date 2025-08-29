@@ -77,10 +77,17 @@ jobs:
         working-directory: ${{ inputs.working-directory }}
         run: poetry export -f requirements.txt -o requirements.txt --with-credentials --without-hashes
 
-      - name: Patch requirements.txt with Gemfury NOPASS
+      - name: Patch requirements.txt with Gemfury credentials
         run: |
-          sed -i '1s|.*|--extra-index-url https://${{ secrets.private-package-repo-username }}:${{ secrets.private-package-repo-password }}@${{ inputs.private-package-repo-url }}|' requirements.txt
-
+          if [ -n "${{ inputs.private-package-repo-url }}" ]; then
+            PRIVATE_URL="${{ inputs.private-package-repo-url }}"
+            PRIVATE_USERNAME="${{ secrets.private-package-repo-username }}"
+            PRIVATE_PASSWORD="${{ secrets.private-package-repo-password }}"
+            AUTH_URL=$(echo "$PRIVATE_URL" | sed "s#https://#https://${PRIVATE_USERNAME}:${PRIVATE_PASSWORD}@#")
+            sed -i "1s|.*|--extra-index-url $AUTH_URL|" requirements.txt
+          else
+            echo "No private package repo URL provided; skipping patch."
+          fi
       - name: Show requirements
         working-directory: ${{ inputs.working-directory }}
         run: cat requirements.txt
