@@ -69,7 +69,7 @@ jobs:
           dependency-hash-version: ${{ inputs.dependency-hash-version }}
 
       - name: Generate Python Client
-        run: pipx run --spec openapi-python-client==${{ inputs.python-generator-version }} openapi-python-client generate --config python-generator-config.yml --path openapi.json --meta poetry
+        run: pipx run --spec openapi-python-client==${{ inputs.python-generator-version }} openapi-python-client generate --meta poetry --config python-generator-config.yml --path openapi.json
 
       - name: Publish Python Client
         uses: triaxtec/github-actions/python/publish-package@v3
