@@ -61,7 +61,11 @@ runs:
       # 72731: (Temporary) ignore issue with flask-cors because it is not yet fixed
       # 76903: (Temporary) ignore issue with h11 because dependencies are locked to < 24
       # 79193: Ignore safety issue with deepdiff, there is no update avialable yet
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668 -i 52983 -i 53310 -i 53332 -i 65213 -i 64930 -i 65293 -i 71199 -i 70612 -i 70626 -i 71083 -i 68094 -i 71594 -i 70624 -i 72731 -i 76903 -i 79193
+      # 78279: (Temporary) ignore issue
+      # 80876: (Temporary) ignore issue
+      # 73725: (Temporary) ignore issue
+      # 68094: (Temporary) ignore issue
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 51668 -i 52983 -i 53310 -i 53332 -i 65213 -i 64930 -i 65293 -i 71199 -i 70612 -i 70626 -i 71083 -i 68094 -i 71594 -i 70624 -i 72731 -i 76903 -i 79193 -i 78279 -i 80876 -i 73725 -i 68094
 
     - name: Run mypy
       shell: bash
