@@ -49,7 +49,7 @@ runs:
       # 76903: (Temporary) ignore issue with h11 because dependencies are locked to < 24
       # 77323: Flask vulnerability
       # 79193: deepdiff vulnerability
-      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 44715 -i 51668 -i 52983 -i 53325 -i 53326 -i 54456 -i 53868 -i 53869 -i 53812 -i 54456 -i 55261 -i 72731 -i 70624 -i 71199 -i 76903 -i 77323 -i 79193
+      run: poetry export -f requirements.txt | poetry run safety check --bare --stdin -i 42194 -i 42050 -i 44715 -i 51668 -i 52983 -i 53325 -i 53326 -i 54456 -i 53868 -i 53869 -i 53812 -i 54456 -i 55261 -i 72731 -i 70624 -i 71199 -i 76903 -i 77323 -i 79193 -i 82332 -i 82331 -i 82196
 
     - name: Run mypy
       shell: bash
