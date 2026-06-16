@@ -36,6 +36,9 @@ on:
         type: string
         required: false
         default: "1.4.1"
+      cli-name:
+        required: false
+        type: string
     secrets:
       private-package-repo-username:
         required: false
